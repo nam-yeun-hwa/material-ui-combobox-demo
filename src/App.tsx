@@ -1,26 +1,33 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchTop100Films } from "./fetch/fetchTop100Films";
 import Select from "./components/Select";
 import { selectOptionType } from "type/data";
+import jsonData from "./json/top100Films.json";
 
 function App() {
-  const [selectedValue, setSelectedValue] = useState<Array<selectOptionType>>();
+  const [selectedValue, setSelectedValue] = useState<string>();
+  const [data, setData] = useState<selectOptionType>();
 
   useEffect(() => {
-    fetchTop100Films();
-    setSelectedValue((preValue) => {
-      return preValue;
-    });
-  }, []);
+    const fetchData = async () => {
+      let data = await fetchTop100Films();
+      if (data) {
+        setData(data);
+        console.log("data", data);
+      }
+    };
+
+    fetchData();
+  }, [data]);
 
   return (
     <>
-      {/* <Select
+      <Select
         value={selectedValue}
-        options={top100Films}
+        options={data}
         onChange={(value) => setSelectedValue(value)}
-      /> */}
+      />
     </>
   );
 }

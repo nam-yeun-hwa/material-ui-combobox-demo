@@ -1,3 +1,4 @@
+import { selectOptionType } from "type/data";
 import jsonData from "../json/top100Films.json";
 
 /**
@@ -6,7 +7,7 @@ import jsonData from "../json/top100Films.json";
  * @returns delay
  * @description 딜레이
  */
-const delay = (ms: number) => {
+const delay = (ms: number): Promise<selectOptionType> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(jsonData);
@@ -17,10 +18,10 @@ const delay = (ms: number) => {
 /**
  * @description 300ms 지연 후 `top100Films`을 리턴해야 합니다.
  */
-const fetchTop100Films = async () => {
+const fetchTop100Films = async (): Promise<selectOptionType | undefined> => {
   try {
     const fetchData = await delay(6000);
-    console.log(fetchData);
+
     if (fetchData) {
       return fetchData;
     }
