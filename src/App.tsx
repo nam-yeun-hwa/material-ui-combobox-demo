@@ -1,12 +1,28 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import { useEffect, useState } from "react";
+import { fetchTop100Films } from "./fetch/fetchTop100Films";
+import Select from "./components/Select";
+import { selectOptionType } from "type/data";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [selectedValue, setSelectedValue] = useState<Array<selectOptionType>>();
 
-  return <></>;
+  useEffect(() => {
+    fetchTop100Films();
+    setSelectedValue((preValue) => {
+      return preValue;
+    });
+  }, []);
+
+  return (
+    <>
+      {/* <Select
+        value={selectedValue}
+        options={top100Films}
+        onChange={(value) => setSelectedValue(value)}
+      /> */}
+    </>
+  );
 }
 
 export default App;
