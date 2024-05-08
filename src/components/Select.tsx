@@ -4,7 +4,7 @@ import "./select.css";
 
 type SelectProps = {
   value?: string | null;
-  options: selectOptionType | undefined | (() => Promise<selectOptionType>);
+  options: selectOptionType | undefined;
   onChange?: (value: string) => void;
 };
 
@@ -20,7 +20,7 @@ export default function Select(props: SelectProps) {
         <div className="MuiFormControl-root">
           {/* <label className="MuiFormLabel-root">Movie</label> */}
           <div className="MuiInputBase-root">
-            <input className="MuiInputBase-input" />
+            <input className="MuiInputBase-input" placeholder={"Movie"} />
             <div className="MuiAutocomplete-endAdornment">
               <button className="MuiButtonBase-root">
                 <svg>
@@ -28,15 +28,14 @@ export default function Select(props: SelectProps) {
                 </svg>
               </button>
             </div>
-            <fieldset>
-              <legend>
-                <span>Movie</span>
-              </legend>
-            </fieldset>
           </div>
         </div>
       </div>
-      <div className="base-popper-root"></div>
+      <div className="base-popper-root">
+        {options?.map((item) => {
+          return <div className="option-item">{item.label}</div>;
+        })}
+      </div>
     </>
   );
 }
