@@ -204,8 +204,8 @@ fieldset:hover {
 
 .base-popper-root {
   box-sizing: border-box;
-  display: none;
-  height: calc(100% - 100px);
+  visibility: hidden;
+  max-height: calc(100% - 100px);
 
   overflow: scroll;
   background-color: rgba(246, 247, 248, 0.5);
@@ -216,7 +216,7 @@ fieldset:hover {
 
 /* .base-popper-root가 focus상태일때 */
 .open {
-  display: block;
+  visibility: visible;
 }
 
 .option-item {

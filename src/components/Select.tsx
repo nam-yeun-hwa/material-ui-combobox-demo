@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { selectOptionType } from "type/data";
 import "./select.css";
 
@@ -16,6 +16,19 @@ export default function Select(props: SelectProps) {
   const [optionSearchList, setOptionSearchList] = useState<
     selectOptionType | undefined
   >();
+
+  const selectRef = useRef<HTMLDivElement>(null);
+  const [selectMaxWidth, setSelectMaxWidth] = useState(0);
+
+  useEffect(() => {
+    if (selectRef.current) {
+      const width = selectRef.current.offsetWidth;
+      setSelectMaxWidth((preState) => {
+        return Math.max(preState, width);
+      });
+      console.log("selectWidth", selectMaxWidth);
+    }
+  }, [options, selectMaxWidth]);
 
   /**
    * @description input검색에 따른 option filter
@@ -57,7 +70,10 @@ export default function Select(props: SelectProps) {
 
   return (
     <>
-      <div className="MuiAutocomplete-root">
+      <div
+        className={`MuiAutocomplete-root`}
+        style={{ width: `${selectMaxWidth}px` }}
+      >
         <div className="MuiFormControl-root">
           {/* <label className="MuiFormLabel-root">Movie</label> */}
           <div className={`MuiInputBase-root ${isFocused && "focused"}`}>
@@ -80,7 +96,10 @@ export default function Select(props: SelectProps) {
           </div>
         </div>
       </div>
-      <div className={`base-popper-root ${isFocused && "open"}`}>
+      <div
+        ref={selectRef}
+        className={`base-popper-root ${isFocused && "open"}`}
+      >
         {inputValue && inputValue?.length > 0 ? (
           <>
             {optionSearchList?.map((item) => {
