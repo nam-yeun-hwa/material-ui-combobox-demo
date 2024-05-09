@@ -21,13 +21,15 @@ function App() {
   }, [data]);
 
   return (
-    <>
-      <Select
-        value={selectedValue}
-        options={data}
-        onChange={(value) => setSelectedValue(value)}
-      />
-    </>
+    <div className="container">
+      <div className="contents">
+        <Select
+          value={selectedValue}
+          options={data}
+          onChange={(value) => setSelectedValue(value)}
+        />
+      </div>
+    </div>
   );
 }
 
