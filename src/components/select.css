@@ -54,10 +54,12 @@
   padding-right: 39px;
 }
 
+/* .MuiInputBase-root가 over 상태일때 */
 .MuiInputBase-root:hover {
   border-color: #212121;
 }
 
+/* .MuiInputBase-root가 focus 상태일때 */
 .focused {
   outline: 2px solid #3874cb;
   border-color: transparent !important;
@@ -201,11 +203,17 @@ fieldset:hover {
 }
 
 .base-popper-root {
+  display: none;
   height: auto;
   overflow: scroll;
   background-color: rgba(246, 247, 248, 0.5);
   border: 1px solid rgb(232, 234, 238);
   padding: 15px 0px;
+}
+
+/* .base-popper-root가 focus상태일때 */
+.open {
+  display: block;
 }
 
 .option-item {

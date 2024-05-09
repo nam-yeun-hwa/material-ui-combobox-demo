@@ -80,7 +80,7 @@ export default function Select(props: SelectProps) {
           </div>
         </div>
       </div>
-      <div className="base-popper-root">
+      <div className={`base-popper-root ${isFocused && "open"}`}>
         {inputValue && inputValue?.length > 0 ? (
           <>
             {optionSearchList?.map((item) => {
