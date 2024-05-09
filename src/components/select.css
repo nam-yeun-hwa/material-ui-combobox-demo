@@ -58,6 +58,11 @@
   border-color: #212121;
 }
 
+.focused {
+  outline: 2px solid #3874cb;
+  border-color: transparent !important;
+}
+
 fieldset {
   position: absolute;
   bottom: 0;
@@ -204,6 +209,7 @@ fieldset:hover {
 }
 
 .option-item {
+  cursor: pointer;
   padding: 5px 8px;
 }
 
