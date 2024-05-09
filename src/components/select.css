@@ -203,10 +203,13 @@ fieldset:hover {
 }
 
 .base-popper-root {
+  box-sizing: border-box;
   display: none;
-  height: auto;
+  height: calc(100% - 100px);
+
   overflow: scroll;
   background-color: rgba(246, 247, 248, 0.5);
+
   border: 1px solid rgb(232, 234, 238);
   padding: 15px 0px;
 }
