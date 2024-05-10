@@ -20,7 +20,7 @@ const delay = (ms: number): Promise<selectOptionType> => {
  */
 const fetchTop100Films = async (): Promise<selectOptionType | undefined> => {
   try {
-    const fetchData = await delay(6000);
+    const fetchData = await delay(300);
 
     if (fetchData) {
       return fetchData;

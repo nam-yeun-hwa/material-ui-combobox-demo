@@ -240,6 +240,7 @@ fieldset:hover {
   visibility: visible !important;
 }
 
+/* MuiInputBase-root 부모 컨테이너의 패딩 값을 넓혀준다. */
 .clearVisible {
   padding-right: 65px;
 }

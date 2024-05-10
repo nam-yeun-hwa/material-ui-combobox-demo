@@ -17,7 +17,10 @@ export default function Select(props: SelectProps) {
     selectOptionType | undefined
   >();
 
+  const [selectOptionActive, setSelectOptionActive] = useState(false);
+
   const selectRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [selectMaxWidth, setSelectMaxWidth] = useState(300);
 
   /**
@@ -37,16 +40,29 @@ export default function Select(props: SelectProps) {
    * @description input검색에 따른 option filter
    */
   useEffect(() => {
-    console.log("inputValue", inputValue);
     if (inputValue.length > 0) {
       const filteredItems = options?.filter((optionItem) => {
         return optionItem.label.includes(inputValue);
       });
+
       if (filteredItems && filteredItems?.length > 0) {
         setOptionSearchList(filteredItems);
+      } else {
+        setOptionSearchList([{ label: "No options", value: "0" }]);
       }
     }
   }, [inputValue, setOptionSearchList]);
+
+  /**
+   * @description selectOptionActive 초기화 시켜주기
+   * option 클릭 후 input 해당 옵션값의 텍스트가 들어가 있을때 옵션 값을 다 지워줄 경우에는
+   * selectOptionActive를 false로 초기화 해준다.
+   */
+  useEffect(() => {
+    if (inputValue.length === 0) {
+      setSelectOptionActive(false);
+    }
+  }, [inputValue]);
 
   /**
    * @function handleInputChange
@@ -83,6 +99,7 @@ export default function Select(props: SelectProps) {
 
     if (findItem) {
       setInputValue(findItem.label);
+      setSelectOptionActive(true);
       // setIsFocused(false);
     }
   };
@@ -93,6 +110,10 @@ export default function Select(props: SelectProps) {
    */
   const onClickClearInputSearch = () => {
     setInputValue("");
+    setSelectOptionActive(false);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   return (
@@ -105,11 +126,12 @@ export default function Select(props: SelectProps) {
           {/* <label className="MuiFormLabel-root">Movie</label> */}
           <div
             className={`MuiInputBase-root ${isFocused && "focused"} ${
-              inputValue && "clearVisible"
+              selectOptionActive && inputValue.length > 0 && "clearVisible"
             }`}
           >
             <input
               className="MuiInputBase-input"
+              ref={inputRef}
               type="text"
               value={inputValue}
               onFocus={handleFocus}
@@ -120,7 +142,9 @@ export default function Select(props: SelectProps) {
             <div className="MuiAutocomplete-endAdornment">
               <button
                 className={`MuiAutocomplete-clearIndicator ${
-                  inputValue && "clearIndicator-visible"
+                  selectOptionActive &&
+                  inputValue.length > 0 &&
+                  "clearIndicator-visible"
                 }`}
                 onClickCapture={onClickClearInputSearch}
               >
@@ -142,26 +166,30 @@ export default function Select(props: SelectProps) {
       </div>
       <div
         ref={selectRef}
-        className={`base-popper-root ${isFocused && "open"}`}
+        className={`base-popper-root ${
+          isFocused && selectOptionActive === false && "open"
+        }`}
       >
         {inputValue && inputValue?.length > 0 ? (
           <>
-            {optionSearchList?.map((item) => {
-              return (
-                <div
-                  key={item.value}
-                  className="option-item"
-                  onClick={() => {
-                    onClickOptionValue(item.value);
-                  }}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  {item.label}
-                </div>
-              );
-            })}
+            {optionSearchList && optionSearchList?.length > 0
+              ? optionSearchList?.map((item) => {
+                  return (
+                    <div
+                      key={item.value}
+                      className="option-item"
+                      onClick={() => {
+                        onClickOptionValue(item.value);
+                      }}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                  );
+                })
+              : "No Option"}
           </>
         ) : (
           <>
