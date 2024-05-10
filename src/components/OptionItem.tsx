@@ -4,12 +4,14 @@ import "./optionItem.css";
 type Props = {
   options?: selectOptionType;
   onClickOptionItem: (option: optionItem) => void;
+  onMouseOverHandler: (option: optionItem) => void;
   activeItem?: optionItem;
 };
 
 export default function OptionItem({
   options,
   onClickOptionItem,
+  onMouseOverHandler,
   activeItem,
 }: Props) {
   return (
@@ -22,6 +24,7 @@ export default function OptionItem({
               activeItem?.value === item.value && "active-option-item"
             }`}
             onClick={() => onClickOptionItem(item)}
+            onMouseOver={() => onMouseOverHandler(item)}
             onMouseDown={(e) => {
               e.preventDefault();
             }}

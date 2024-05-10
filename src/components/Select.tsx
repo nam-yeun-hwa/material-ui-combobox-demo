@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { optionItem, selectOptionType } from "type/data";
 import "./select.css";
 import OptionItem from "./OptionItem";
@@ -24,6 +24,8 @@ export default function Select(props: SelectProps) {
   const [selectOptionActive, setSelectOptionActive] = useState<
     optionItem | undefined
   >();
+
+  const [enterItem, setOnEnterItem] = useState<optionItem | undefined>();
 
   /**
    * @description select component 최대값 구하기
@@ -53,6 +55,10 @@ export default function Select(props: SelectProps) {
       }
     }
   }, [inputValue, setOptionSearchList]);
+
+  useEffect(() => {
+    console.log("selectOptionActive", selectOptionActive);
+  }, [selectOptionActive]);
 
   /**
    * @description selectOptionActive 초기화 시켜주기
@@ -109,7 +115,6 @@ export default function Select(props: SelectProps) {
    * @description input search clear
    */
   const onClickClearInputSearch = () => {
-    console.log("옵션 검색 텍스트 지우기");
     setInputValue("");
     setIsFocused(true);
     setSelectOptionActive(undefined);
@@ -134,11 +139,61 @@ export default function Select(props: SelectProps) {
     setIsFocused(!isFocused);
   };
 
+  const onMouseOverHandler = (item: optionItem) => {
+    setOnEnterItem(item);
+  };
+
+  /**
+   * @function onKeyboardHandler
+   * @description 키보드 이벤트
+   */
+  const onKeyboardHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+    let selectOptionActive;
+    switch (e.key) {
+      case "Enter":
+        console.log("Enter 키가 눌렸습니다.");
+
+        // Enter 키가 눌렸을 때 수행할 작업 추가
+        break;
+      case "ArrowUp":
+        console.log("위쪽 화살표 키가 눌렸습니다.");
+        setSelectOptionActive((preValue) => {
+          if (preValue) {
+            const currentValue = Number(preValue?.value);
+            return options?.find(
+              (item) => item.value === String(currentValue - 1)
+            );
+          } else {
+            return options && options[99];
+          }
+        });
+        // 위쪽 화살표 키가 눌렸을 때 수행할 작업 추가
+        break;
+      case "ArrowDown":
+        console.log("아래쪽 화살표 키가 눌렸습니다.");
+        setSelectOptionActive((preValue) => {
+          if (preValue) {
+            const currentValue = Number(preValue?.value);
+            return options?.find(
+              (item) => item.value === String(currentValue + 1)
+            );
+          } else {
+            return options && options[0];
+          }
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       <div
         className={`MuiAutocomplete-root`}
         style={{ width: `${selectMaxWidth}px` }}
+        onKeyDown={onKeyboardHandler}
+        tabIndex={0}
       >
         <div className="MuiFormControl-root">
           {/* <label className="MuiFormLabel-root">Movie</label> */}
@@ -198,6 +253,7 @@ export default function Select(props: SelectProps) {
           <OptionItem
             options={options}
             onClickOptionItem={onClickOptionItem}
+            onMouseOverHandler={onMouseOverHandler}
             activeItem={selectOptionActive}
           />
         )}
@@ -208,6 +264,7 @@ export default function Select(props: SelectProps) {
             <OptionItem
               options={optionSearchList}
               onClickOptionItem={onClickOptionItem}
+              onMouseOverHandler={onMouseOverHandler}
               activeItem={selectOptionActive}
             />
           )}
@@ -217,6 +274,7 @@ export default function Select(props: SelectProps) {
           <OptionItem
             options={options}
             onClickOptionItem={onClickOptionItem}
+            onMouseOverHandler={onMouseOverHandler}
             activeItem={selectOptionActive}
           />
         )}
@@ -225,6 +283,7 @@ export default function Select(props: SelectProps) {
           <OptionItem
             options={options}
             onClickOptionItem={onClickOptionItem}
+            onMouseOverHandler={onMouseOverHandler}
             activeItem={selectOptionActive}
           />
         )}
