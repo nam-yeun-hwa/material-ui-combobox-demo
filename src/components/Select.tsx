@@ -16,12 +16,11 @@ export default function Select(props: SelectProps) {
   const [optionSearchList, setOptionSearchList] = useState<
     selectOptionType | undefined
   >();
-
-  const [selectOptionActive, setSelectOptionActive] = useState(false);
-
   const selectRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectMaxWidth, setSelectMaxWidth] = useState(300);
+
+  const [selectOptionActive, setSelectOptionActive] = useState(false);
 
   /**
    * @description select component 최대값 구하기
@@ -32,7 +31,6 @@ export default function Select(props: SelectProps) {
       setSelectMaxWidth((preState) => {
         return Math.max(preState, width);
       });
-      console.log("selectWidth", selectMaxWidth);
     }
   }, [options, selectMaxWidth]);
 
@@ -73,19 +71,20 @@ export default function Select(props: SelectProps) {
   };
 
   /**
-   * @function handleFocus
+   * @function onFocusHandler
    * @description 포커스 이벤트 핸들러
    */
-  const handleFocus = () => {
+  const onFocusHandler = () => {
     setIsFocused(true);
   };
 
   /**
-   * @function handleBlur
+   * @function onBlurHandler
    * @deprecated 포커스 아웃 이벤트 핸들러
    */
-  const handleBlur = () => {
+  const onBlurHandler = () => {
     setIsFocused(false);
+    setInputValue("");
   };
 
   /**
@@ -94,13 +93,12 @@ export default function Select(props: SelectProps) {
    * @description 클릭한 옵션
    */
   const onClickOptionValue = (optionValue: string) => {
-    console.log("optionValue", optionValue);
+    console.log("옵션선택", optionValue);
     const findItem = options?.find((item) => item.value === optionValue);
-
+    setIsFocused(false);
     if (findItem) {
       setInputValue(findItem.label);
       setSelectOptionActive(true);
-      // setIsFocused(false);
     }
   };
 
@@ -109,11 +107,17 @@ export default function Select(props: SelectProps) {
    * @description input search clear
    */
   const onClickClearInputSearch = () => {
+    console.log("옵션 검색 텍스트 지우기");
     setInputValue("");
+    setIsFocused(true);
     setSelectOptionActive(false);
     if (inputRef.current) {
       inputRef.current.focus();
     }
+  };
+
+  const onClickFocusOnHandler = () => {
+    setIsFocused(true);
   };
 
   return (
@@ -126,7 +130,7 @@ export default function Select(props: SelectProps) {
           {/* <label className="MuiFormLabel-root">Movie</label> */}
           <div
             className={`MuiInputBase-root ${isFocused && "focused"} ${
-              selectOptionActive && inputValue.length > 0 && "clearVisible"
+              selectOptionActive && "clearVisible"
             }`}
           >
             <input
@@ -134,8 +138,9 @@ export default function Select(props: SelectProps) {
               ref={inputRef}
               type="text"
               value={inputValue}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
+              onClick={onClickFocusOnHandler}
+              onFocus={onFocusHandler}
+              onBlur={onBlurHandler}
               onChange={handleInputChange}
               placeholder={"Movie"}
             />
@@ -146,7 +151,10 @@ export default function Select(props: SelectProps) {
                   inputValue.length > 0 &&
                   "clearIndicator-visible"
                 }`}
-                onClickCapture={onClickClearInputSearch}
+                onClick={onClickClearInputSearch}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                }}
               >
                 <svg>
                   <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
@@ -154,7 +162,7 @@ export default function Select(props: SelectProps) {
               </button>
               <button
                 className="MuiAutocomplete-arrowIndicator"
-                onClickCapture={onClickClearInputSearch}
+                onClick={onClickClearInputSearch}
               >
                 <svg>
                   <path d="M7 10l5 5 5-5z"></path>
@@ -166,32 +174,72 @@ export default function Select(props: SelectProps) {
       </div>
       <div
         ref={selectRef}
-        className={`base-popper-root ${
-          isFocused && selectOptionActive === false && "open"
-        }`}
+        className={`base-popper-root ${isFocused && "open"}`}
       >
-        {inputValue && inputValue?.length > 0 ? (
+        {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
+        {selectOptionActive === false && inputValue?.length === 0 && (
           <>
-            {optionSearchList && optionSearchList?.length > 0
-              ? optionSearchList?.map((item) => {
-                  return (
-                    <div
-                      key={item.value}
-                      className="option-item"
-                      onClick={() => {
-                        onClickOptionValue(item.value);
-                      }}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                })
-              : "No Option"}
+            {options?.map((item) => {
+              return (
+                <div
+                  key={item.value}
+                  className="option-item"
+                  onClick={() => onClickOptionValue(item.value)}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  [{item.value}]-{item.label}
+                </div>
+              );
+            })}
           </>
-        ) : (
+        )}
+        {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
+        {selectOptionActive === false &&
+          inputValue &&
+          inputValue?.length > 0 && (
+            <>
+              {optionSearchList?.map((item) => {
+                return (
+                  <div
+                    key={item.value}
+                    className="option-item"
+                    onClick={() => {
+                      onClickOptionValue(item.value);
+                    }}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                );
+              })}
+            </>
+          )}
+
+        {/* 선택항목이 있을때 > 선택항목이 Active 된 option list */}
+        {selectOptionActive && (
+          <>
+            {options?.map((item) => {
+              return (
+                <div
+                  key={item.value}
+                  className="option-item"
+                  onClick={() => onClickOptionValue(item.value)}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  [{item.value}]-{item.label}
+                </div>
+              );
+            })}
+          </>
+        )}
+
+        {isFocused && selectOptionActive && (
           <>
             {options?.map((item) => {
               return (
