@@ -117,7 +117,13 @@ export default function Select(props: SelectProps) {
   };
 
   const onClickFocusOnHandler = () => {
+    console.log("요기 아닌데");
     setIsFocused(true);
+  };
+
+  const onToggleOptionList = () => {
+    console.log("ㅓㄴ미ㅏ러ㅣㅏ", !isFocused);
+    setIsFocused(!isFocused);
   };
 
   return (
@@ -162,7 +168,10 @@ export default function Select(props: SelectProps) {
               </button>
               <button
                 className="MuiAutocomplete-arrowIndicator"
-                onClick={onClickClearInputSearch}
+                onClick={onToggleOptionList}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                }}
               >
                 <svg>
                   <path d="M7 10l5 5 5-5z"></path>
