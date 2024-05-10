@@ -21,7 +21,9 @@ export default function Select(props: SelectProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectMaxWidth, setSelectMaxWidth] = useState(300);
 
-  const [selectOptionActive, setSelectOptionActive] = useState(false);
+  const [selectOptionActive, setSelectOptionActive] = useState<
+    optionItem | undefined
+  >();
 
   /**
    * @description select component 최대값 구하기
@@ -59,7 +61,7 @@ export default function Select(props: SelectProps) {
    */
   useEffect(() => {
     if (inputValue.length === 0) {
-      setSelectOptionActive(false);
+      setSelectOptionActive(undefined);
     }
   }, [inputValue]);
 
@@ -98,7 +100,7 @@ export default function Select(props: SelectProps) {
     setIsFocused(false);
     if (optionItem) {
       setInputValue(optionItem.label);
-      setSelectOptionActive(true);
+      setSelectOptionActive(optionItem);
     }
   };
 
@@ -110,7 +112,7 @@ export default function Select(props: SelectProps) {
     console.log("옵션 검색 텍스트 지우기");
     setInputValue("");
     setIsFocused(true);
-    setSelectOptionActive(false);
+    setSelectOptionActive(undefined);
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -192,26 +194,39 @@ export default function Select(props: SelectProps) {
         className={`base-popper-root ${isFocused && "open"}`}
       >
         {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
-        {selectOptionActive === false && inputValue?.length === 0 && (
-          <OptionItem options={options} onClickOptionItem={onClickOptionItem} />
+        {selectOptionActive === undefined && inputValue?.length === 0 && (
+          <OptionItem
+            options={options}
+            onClickOptionItem={onClickOptionItem}
+            activeItem={selectOptionActive}
+          />
         )}
         {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
-        {selectOptionActive === false &&
+        {selectOptionActive === undefined &&
           inputValue &&
           inputValue?.length > 0 && (
             <OptionItem
               options={optionSearchList}
               onClickOptionItem={onClickOptionItem}
+              activeItem={selectOptionActive}
             />
           )}
 
-        {/* 선택항목이 있을때 > 선택항목이 Active 된 option list */}
+        {/* 3. 선택항목이 있을때 > 선택항목이 Active 된 option list */}
         {selectOptionActive && (
-          <OptionItem options={options} onClickOptionItem={onClickOptionItem} />
+          <OptionItem
+            options={options}
+            onClickOptionItem={onClickOptionItem}
+            activeItem={selectOptionActive}
+          />
         )}
-
+        {/* 4. focus상태이고 선택된 항목이 있을때 */}
         {isFocused && selectOptionActive && (
-          <OptionItem options={options} onClickOptionItem={onClickOptionItem} />
+          <OptionItem
+            options={options}
+            onClickOptionItem={onClickOptionItem}
+            activeItem={selectOptionActive}
+          />
         )}
       </div>
     </>

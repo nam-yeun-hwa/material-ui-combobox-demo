@@ -2,18 +2,25 @@ import { optionItem, selectOptionType } from "type/data";
 import "./optionItem.css";
 
 type Props = {
-  options: selectOptionType | undefined;
+  options?: selectOptionType;
   onClickOptionItem: (option: optionItem) => void;
+  activeItem?: optionItem;
 };
 
-export default function OptionItem({ options, onClickOptionItem }: Props) {
+export default function OptionItem({
+  options,
+  onClickOptionItem,
+  activeItem,
+}: Props) {
   return (
     <>
       {options?.map((item) => {
         return (
           <div
             key={item.value}
-            className="option-item"
+            className={`option-item ${
+              activeItem?.value === item.value && "active-option-item"
+            }`}
             onClick={() => onClickOptionItem(item)}
             onMouseDown={(e) => {
               e.preventDefault();
