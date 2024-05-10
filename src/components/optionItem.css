@@ -1,0 +1,9 @@
+.option-item {
+  cursor: pointer;
+  text-align: left;
+  padding: 10px 8px;
+}
+
+.option-item:hover {
+  background-color: #f5f5f5;
+}

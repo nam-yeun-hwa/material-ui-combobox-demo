@@ -256,10 +256,6 @@ fieldset:hover {
   right: 9px;
 }
 
-.option-item {
-  text-align: left;
-}
-
 .base-popper-root {
   box-sizing: border-box;
   visibility: hidden;
@@ -275,13 +271,4 @@ fieldset:hover {
 /* .base-popper-root가 focus상태일때 */
 .open {
   visibility: visible;
-}
-
-.option-item {
-  cursor: pointer;
-  padding: 10px 8px;
-}
-
-.option-item:hover {
-  background-color: #f5f5f5;
 }

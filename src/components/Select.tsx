@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { selectOptionType } from "type/data";
+import { optionItem, selectOptionType } from "type/data";
 import "./select.css";
+import OptionItem from "./OptionItem";
 
 type SelectProps = {
   value?: string | null;
@@ -92,12 +93,11 @@ export default function Select(props: SelectProps) {
    * @param optionValue 클릭한 option item
    * @description 클릭한 옵션
    */
-  const onClickOptionValue = (optionValue: string) => {
-    console.log("옵션선택", optionValue);
-    const findItem = options?.find((item) => item.value === optionValue);
+  const onClickOptionItem = (optionItem: optionItem) => {
+    console.log("옵션선택", optionItem);
     setIsFocused(false);
-    if (findItem) {
-      setInputValue(findItem.label);
+    if (optionItem) {
+      setInputValue(optionItem.label);
       setSelectOptionActive(true);
     }
   };
@@ -116,13 +116,19 @@ export default function Select(props: SelectProps) {
     }
   };
 
+  /**
+   * @function onClickFocusOnHandler
+   * @description input 클릭시 Focus On
+   */
   const onClickFocusOnHandler = () => {
-    console.log("요기 아닌데");
     setIsFocused(true);
   };
 
+  /**
+   * @function onToggleOptionList
+   * @description option toggle
+   */
   const onToggleOptionList = () => {
-    console.log("ㅓㄴ미ㅏ러ㅣㅏ", !isFocused);
     setIsFocused(!isFocused);
   };
 
@@ -187,84 +193,25 @@ export default function Select(props: SelectProps) {
       >
         {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
         {selectOptionActive === false && inputValue?.length === 0 && (
-          <>
-            {options?.map((item) => {
-              return (
-                <div
-                  key={item.value}
-                  className="option-item"
-                  onClick={() => onClickOptionValue(item.value)}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  [{item.value}]-{item.label}
-                </div>
-              );
-            })}
-          </>
+          <OptionItem options={options} onClickOptionItem={onClickOptionItem} />
         )}
         {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
         {selectOptionActive === false &&
           inputValue &&
           inputValue?.length > 0 && (
-            <>
-              {optionSearchList?.map((item) => {
-                return (
-                  <div
-                    key={item.value}
-                    className="option-item"
-                    onClick={() => {
-                      onClickOptionValue(item.value);
-                    }}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                    }}
-                  >
-                    {item.label}
-                  </div>
-                );
-              })}
-            </>
+            <OptionItem
+              options={optionSearchList}
+              onClickOptionItem={onClickOptionItem}
+            />
           )}
 
         {/* 선택항목이 있을때 > 선택항목이 Active 된 option list */}
         {selectOptionActive && (
-          <>
-            {options?.map((item) => {
-              return (
-                <div
-                  key={item.value}
-                  className="option-item"
-                  onClick={() => onClickOptionValue(item.value)}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  [{item.value}]-{item.label}
-                </div>
-              );
-            })}
-          </>
+          <OptionItem options={options} onClickOptionItem={onClickOptionItem} />
         )}
 
         {isFocused && selectOptionActive && (
-          <>
-            {options?.map((item) => {
-              return (
-                <div
-                  key={item.value}
-                  className="option-item"
-                  onClick={() => onClickOptionValue(item.value)}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  [{item.value}]-{item.label}
-                </div>
-              );
-            })}
-          </>
+          <OptionItem options={options} onClickOptionItem={onClickOptionItem} />
         )}
       </div>
     </>
