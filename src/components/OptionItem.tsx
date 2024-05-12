@@ -6,6 +6,7 @@ type Props = {
   onClickOptionItem: (option: optionItem) => void;
   onMouseOverHandler: (option: optionItem) => void;
   activeItem?: optionItem;
+  hoverItem?: optionItem;
 };
 
 export default function OptionItem({
@@ -13,6 +14,7 @@ export default function OptionItem({
   onClickOptionItem,
   onMouseOverHandler,
   activeItem,
+  hoverItem,
 }: Props) {
   return (
     <>
@@ -21,7 +23,8 @@ export default function OptionItem({
           <div
             key={item.value}
             className={`option-item ${
-              activeItem?.value === item.value && "active-option-item"
+              (activeItem?.value === item.value && "active-option-item") ||
+              (hoverItem?.value === item.value && "hover-option-item ")
             }`}
             onClick={() => onClickOptionItem(item)}
             onMouseOver={() => onMouseOverHandler(item)}

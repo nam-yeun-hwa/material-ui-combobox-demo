@@ -139,8 +139,13 @@ export default function Select(props: SelectProps) {
     setIsFocused(!isFocused);
   };
 
-  const onMouseOverHandler = (item: optionItem) => {
-    setOnEnterItem(item);
+  /**
+   * @function onMouseOverHandler
+   * @param optionItem
+   */
+  const onMouseOverHandler = (optionItem: optionItem) => {
+    // onClickOptionItem(optionItem);
+    setOnEnterItem(optionItem);
   };
 
   /**
@@ -148,18 +153,18 @@ export default function Select(props: SelectProps) {
    * @description 키보드 이벤트
    */
   const onKeyboardHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-    let selectOptionActive;
     switch (e.key) {
       case "Enter":
         console.log("Enter 키가 눌렸습니다.");
-
-        // Enter 키가 눌렸을 때 수행할 작업 추가
+        if (enterItem) {
+          onClickOptionItem(enterItem);
+        }
         break;
       case "ArrowUp":
         console.log("위쪽 화살표 키가 눌렸습니다.");
-        setSelectOptionActive((preValue) => {
-          if (preValue) {
-            const currentValue = Number(preValue?.value);
+        setOnEnterItem((prevState) => {
+          if (prevState) {
+            const currentValue = Number(prevState?.value);
             return options?.find(
               (item) => item.value === String(currentValue - 1)
             );
@@ -167,13 +172,12 @@ export default function Select(props: SelectProps) {
             return options && options[99];
           }
         });
-        // 위쪽 화살표 키가 눌렸을 때 수행할 작업 추가
         break;
       case "ArrowDown":
         console.log("아래쪽 화살표 키가 눌렸습니다.");
-        setSelectOptionActive((preValue) => {
-          if (preValue) {
-            const currentValue = Number(preValue?.value);
+        setOnEnterItem((prevState) => {
+          if (prevState) {
+            const currentValue = Number(prevState?.value);
             return options?.find(
               (item) => item.value === String(currentValue + 1)
             );
@@ -255,6 +259,7 @@ export default function Select(props: SelectProps) {
             onClickOptionItem={onClickOptionItem}
             onMouseOverHandler={onMouseOverHandler}
             activeItem={selectOptionActive}
+            hoverItem={enterItem}
           />
         )}
         {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
@@ -266,6 +271,7 @@ export default function Select(props: SelectProps) {
               onClickOptionItem={onClickOptionItem}
               onMouseOverHandler={onMouseOverHandler}
               activeItem={selectOptionActive}
+              hoverItem={enterItem}
             />
           )}
 
@@ -276,6 +282,7 @@ export default function Select(props: SelectProps) {
             onClickOptionItem={onClickOptionItem}
             onMouseOverHandler={onMouseOverHandler}
             activeItem={selectOptionActive}
+            hoverItem={enterItem}
           />
         )}
         {/* 4. focus상태이고 선택된 항목이 있을때 */}
@@ -285,6 +292,7 @@ export default function Select(props: SelectProps) {
             onClickOptionItem={onClickOptionItem}
             onMouseOverHandler={onMouseOverHandler}
             activeItem={selectOptionActive}
+            hoverItem={enterItem}
           />
         )}
       </div>
