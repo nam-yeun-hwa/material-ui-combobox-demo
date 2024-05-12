@@ -1,4 +1,5 @@
 import "./App.css";
+import "./components/select.css";
 import { useEffect, useRef, useState } from "react";
 import { fetchTop100Films } from "./fetch/fetchTop100Films";
 import Select from "./components/Select";
@@ -22,13 +23,11 @@ function App() {
   return (
     <div className="container">
       <div className="contents">
-        <div className="select-component">
-          <Select
-            value={selectedValue}
-            options={data}
-            onChange={(value) => setSelectedValue(value)}
-          />
-        </div>
+        <Select
+          value={selectedValue}
+          options={data}
+          onChange={(value) => setSelectedValue(value)}
+        />
       </div>
     </div>
   );

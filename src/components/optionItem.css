@@ -1,7 +1,8 @@
 .option-item {
   cursor: pointer;
   text-align: left;
-  padding: 10px 8px;
+  white-space: nowrap;
+  padding: 15px 8px;
 }
 
 .option-item:hover {

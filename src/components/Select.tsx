@@ -17,8 +17,6 @@ export default function Select(props: SelectProps) {
   const [optionSearchList, setOptionSearchList] = useState<
     selectOptionType | undefined
   >();
-  const selectRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const [selectMaxWidth, setSelectMaxWidth] = useState(300);
 
   const [selectOptionActive, setSelectOptionActive] = useState<
@@ -27,13 +25,42 @@ export default function Select(props: SelectProps) {
 
   const [enterItem, setOnEnterItem] = useState<optionItem | undefined>();
   const [isOptionToggle, setIsOptionToggle] = useState(false);
+  const [browserHeight, setBrowserHeight] = useState(window.innerHeight);
+
+  const optionRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setBrowserHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (selectRef.current) {
+      console.log(
+        "top 좌표",
+        selectRef.current.getBoundingClientRect().top + window.pageYOffset + 58
+      );
+
+      console.log("현재 브라우저 높이", browserHeight);
+    }
+  }, [selectRef]);
 
   /**
    * @description select component 최대값 구하기
    */
   useEffect(() => {
-    if (selectRef.current) {
-      const width = selectRef.current.offsetWidth;
+    if (optionRef.current) {
+      const width = optionRef.current.offsetWidth;
+      console.log("width", width);
       setSelectMaxWidth((preState) => {
         return Math.max(preState, width);
       });
@@ -207,7 +234,7 @@ export default function Select(props: SelectProps) {
   };
 
   return (
-    <>
+    <div className="select-component" ref={selectRef}>
       <div
         className={`MuiAutocomplete-root`}
         style={{ width: `${selectMaxWidth}px` }}
@@ -264,53 +291,54 @@ export default function Select(props: SelectProps) {
         </div>
       </div>
       <div
-        ref={selectRef}
         className={`base-popper-root ${isFocused && isOptionToggle && "open"}`}
       >
-        {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
-        {selectOptionActive === undefined && inputValue?.length === 0 && (
-          <OptionItem
-            options={options}
-            onClickOptionItem={onClickOptionItem}
-            onMouseOverHandler={onMouseOverHandler}
-            activeItem={selectOptionActive}
-            hoverItem={enterItem}
-          />
-        )}
-        {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
-        {selectOptionActive === undefined &&
-          inputValue &&
-          inputValue?.length > 0 && (
+        <div className="base-popper-content" ref={optionRef}>
+          {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
+          {selectOptionActive === undefined && inputValue?.length === 0 && (
             <OptionItem
-              options={optionSearchList}
+              options={options}
               onClickOptionItem={onClickOptionItem}
               onMouseOverHandler={onMouseOverHandler}
               activeItem={selectOptionActive}
               hoverItem={enterItem}
             />
           )}
+          {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
+          {selectOptionActive === undefined &&
+            inputValue &&
+            inputValue?.length > 0 && (
+              <OptionItem
+                options={optionSearchList}
+                onClickOptionItem={onClickOptionItem}
+                onMouseOverHandler={onMouseOverHandler}
+                activeItem={selectOptionActive}
+                hoverItem={enterItem}
+              />
+            )}
 
-        {/* 3. 선택항목이 있을때 > 선택항목이 Active 된 option list */}
-        {selectOptionActive && (
-          <OptionItem
-            options={options}
-            onClickOptionItem={onClickOptionItem}
-            onMouseOverHandler={onMouseOverHandler}
-            activeItem={selectOptionActive}
-            hoverItem={enterItem}
-          />
-        )}
-        {/* 4. focus상태이고 선택된 항목이 있을때 */}
-        {isOptionToggle && selectOptionActive && (
-          <OptionItem
-            options={options}
-            onClickOptionItem={onClickOptionItem}
-            onMouseOverHandler={onMouseOverHandler}
-            activeItem={selectOptionActive}
-            hoverItem={enterItem}
-          />
-        )}
+          {/* 3. 선택항목이 있을때 > 선택항목이 Active 된 option list */}
+          {selectOptionActive && (
+            <OptionItem
+              options={options}
+              onClickOptionItem={onClickOptionItem}
+              onMouseOverHandler={onMouseOverHandler}
+              activeItem={selectOptionActive}
+              hoverItem={enterItem}
+            />
+          )}
+          {/* 4. focus상태이고 선택된 항목이 있을때 */}
+          {isOptionToggle && selectOptionActive && (
+            <OptionItem
+              options={options}
+              onClickOptionItem={onClickOptionItem}
+              onMouseOverHandler={onMouseOverHandler}
+              activeItem={selectOptionActive}
+              hoverItem={enterItem}
+            />
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
