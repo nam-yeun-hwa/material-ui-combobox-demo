@@ -23,8 +23,8 @@ export default function OptionItem({
           <div
             key={item.value}
             className={`option-item ${
-              (activeItem?.value === item.value && "active-option-item") ||
-              (hoverItem?.value === item.value && "hover-option-item ")
+              (hoverItem?.value === item.value && "hover-option-item ") ||
+              (activeItem?.value === item.value && "active-option-item")
             }`}
             onClick={() => onClickOptionItem(item)}
             onMouseOver={() => onMouseOverHandler(item)}

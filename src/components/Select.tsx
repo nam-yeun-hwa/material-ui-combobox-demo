@@ -156,6 +156,7 @@ export default function Select(props: SelectProps) {
   const onClickClearInputSearch = () => {
     setInputValue("");
     setIsFocused(true);
+    setOnEnterItem(undefined);
     setSelectOptionActive(undefined);
     if (inputRef.current) {
       inputRef.current.focus();
@@ -211,7 +212,7 @@ export default function Select(props: SelectProps) {
                 (item) => item.value === String(currentValue - 1)
               );
             } else {
-              return options && options[99];
+              return options && options[options.length - 1];
             }
           });
         } else {
