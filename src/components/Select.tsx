@@ -60,8 +60,8 @@ export default function Select(props: SelectProps) {
   useEffect(() => {
     if (optionRef.current) {
       const width = optionRef.current.offsetWidth;
-      console.log("width", width);
       setSelectMaxWidth((preState) => {
+        // console.log("preState", preState, "width", width);
         return Math.max(preState, width);
       });
     }
@@ -291,7 +291,8 @@ export default function Select(props: SelectProps) {
         </div>
       </div>
       <div
-        className={`base-popper-root ${isFocused && isOptionToggle && "open"}`}
+        className={`base-popper-root ${isFocused && isOptionToggle && "open"} `}
+        style={{ width: `${selectMaxWidth}px` }}
       >
         <div className="base-popper-content" ref={optionRef}>
           {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
