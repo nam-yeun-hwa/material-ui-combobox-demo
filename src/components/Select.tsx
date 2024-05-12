@@ -2,6 +2,8 @@ import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { optionItem, selectOptionType } from "type/data";
 import "./select.css";
 import OptionItem from "./OptionItem";
+import useWindowSize from "../hook/useWindowSize.ts";
+import { SELECT_OPTION } from "../constant/constant";
 
 type SelectProps = {
   value?: string | null;
@@ -25,34 +27,33 @@ export default function Select(props: SelectProps) {
 
   const [enterItem, setOnEnterItem] = useState<optionItem | undefined>();
   const [isOptionToggle, setIsOptionToggle] = useState(false);
-  const [browserHeight, setBrowserHeight] = useState(window.innerHeight);
 
   const optionRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setBrowserHeight(window.innerHeight);
-    };
+  const windowSize = useWindowSize();
 
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
+  /**
+   * @description select 엘레멘트 Y값 가져오기
+   */
   useEffect(() => {
     if (selectRef.current) {
-      console.log(
-        "top 좌표",
-        selectRef.current.getBoundingClientRect().top + window.pageYOffset + 58
-      );
+      // 셀렉트 옵션 하단 넓이
+      const bottom_height =
+        windowSize.height -
+        selectRef.current.getBoundingClientRect().top -
+        SELECT_OPTION.HEIGHT;
 
-      console.log("현재 브라우저 높이", browserHeight);
+      //셀렉트 옵션 상단 넓이
+      const top_height =
+        windowSize.height - bottom_height - SELECT_OPTION.HEIGHT;
+
+      console.log("윈도우 사이즈", windowSize.height);
+      console.log("top_height", top_height);
+      console.log("bottom_height", bottom_height);
     }
-  }, [selectRef]);
+  }, [selectRef, windowSize]);
 
   /**
    * @description select component 최대값 구하기
@@ -84,9 +85,11 @@ export default function Select(props: SelectProps) {
     }
   }, [inputValue, setOptionSearchList]);
 
-  useEffect(() => {
-    console.log("selectOptionActive", selectOptionActive);
-  }, [selectOptionActive]);
+  // useEffect(() => {
+  //   console.log("inputValue", inputValue);
+  //   console.log("selectOptionActive", selectOptionActive);
+  //   console.log("isOptionToggle", isOptionToggle);
+  // }, [selectOptionActive, inputValue, isOptionToggle]);
 
   /**
    * @description selectOptionActive 초기화 시켜주기
@@ -292,7 +295,8 @@ export default function Select(props: SelectProps) {
       </div>
       <div
         className={`base-popper-root ${isFocused && isOptionToggle && "open"} `}
-        style={{ width: `${selectMaxWidth}px` }}
+        // data-option={selectMaxWidth}
+        style={{ width: `${selectMaxWidth > 300 && selectMaxWidth}px` }}
       >
         <div className="base-popper-content" ref={optionRef}>
           {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
