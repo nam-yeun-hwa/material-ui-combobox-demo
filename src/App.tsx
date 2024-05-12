@@ -23,11 +23,7 @@ function App() {
   return (
     <div className="container">
       <div className="contents">
-        <Select
-          value={selectedValue}
-          options={data}
-          onChange={(value) => setSelectedValue(value)}
-        />
+        <Select options={data} />
       </div>
     </div>
   );

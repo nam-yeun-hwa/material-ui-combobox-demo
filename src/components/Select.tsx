@@ -6,13 +6,11 @@ import useWindowSize from "../hook/useWindowSize.ts";
 import { SELECT_OPTION } from "../constant/constant";
 
 type SelectProps = {
-  value?: string | null;
   options: selectOptionType | undefined;
-  onChange?: (value: string) => void;
 };
 
 export default function Select(props: SelectProps) {
-  const { value, options, onChange } = props;
+  const { options } = props;
   const [isFocused, setIsFocused] = useState(false);
 
   const [inputValue, setInputValue] = useState("");
@@ -212,7 +210,7 @@ export default function Select(props: SelectProps) {
                 (item) => item.value === String(currentValue - 1)
               );
             } else {
-              return options && options[options.length - 1];
+              return options && options[99];
             }
           });
         } else {
