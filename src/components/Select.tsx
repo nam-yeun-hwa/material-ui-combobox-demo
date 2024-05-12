@@ -34,6 +34,11 @@ export default function Select(props: SelectProps) {
 
   const windowSize = useWindowSize();
 
+  const [availableSpace, setAvailableSpace] = useState<{
+    top: Number | undefined;
+    bottom: Number | undefined;
+  }>();
+
   /**
    * @description select 엘레멘트 Y값 가져오기
    */
@@ -52,6 +57,7 @@ export default function Select(props: SelectProps) {
       console.log("윈도우 사이즈", windowSize.height);
       console.log("top_height", top_height);
       console.log("bottom_height", bottom_height);
+      setAvailableSpace({ top: top_height, bottom: bottom_height });
     }
   }, [selectRef, windowSize]);
 
@@ -294,8 +300,12 @@ export default function Select(props: SelectProps) {
         </div>
       </div>
       <div
-        className={`base-popper-root ${isFocused && isOptionToggle && "open"} `}
-        // data-option={selectMaxWidth}
+        className={`base-popper-root ${isFocused && isOptionToggle && "open"} ${
+          availableSpace?.top &&
+          availableSpace?.bottom &&
+          availableSpace.top > availableSpace.bottom &&
+          "base-popper-root_bottom"
+        }`}
         style={{ width: `${selectMaxWidth > 300 && selectMaxWidth}px` }}
       >
         <div className="base-popper-content" ref={optionRef}>

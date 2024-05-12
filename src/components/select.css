@@ -289,3 +289,8 @@ fieldset:hover {
 .open {
   visibility: visible;
 }
+
+.base-popper-root_bottom {
+  top: auto;
+  bottom: 60px;
+}
