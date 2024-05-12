@@ -26,6 +26,7 @@ export default function Select(props: SelectProps) {
   >();
 
   const [enterItem, setOnEnterItem] = useState<optionItem | undefined>();
+  const [isOptionToggle, setIsOptionToggle] = useState(false);
 
   /**
    * @description select component 최대값 구하기
@@ -85,6 +86,7 @@ export default function Select(props: SelectProps) {
    */
   const onFocusHandler = () => {
     setIsFocused(true);
+    setIsOptionToggle(true);
   };
 
   /**
@@ -103,7 +105,8 @@ export default function Select(props: SelectProps) {
    */
   const onClickOptionItem = (optionItem: optionItem) => {
     console.log("옵션선택", optionItem);
-    setIsFocused(false);
+    // setIsFocused(false);
+    setIsOptionToggle(false);
     if (optionItem) {
       setInputValue(optionItem.label);
       setSelectOptionActive(optionItem);
@@ -129,6 +132,7 @@ export default function Select(props: SelectProps) {
    */
   const onClickFocusOnHandler = () => {
     setIsFocused(true);
+    setIsOptionToggle(true);
   };
 
   /**
@@ -136,7 +140,8 @@ export default function Select(props: SelectProps) {
    * @description option toggle
    */
   const onToggleOptionList = () => {
-    setIsFocused(!isFocused);
+    // setIsFocused(!isFocused);
+    setIsOptionToggle(!isOptionToggle);
   };
 
   /**
@@ -162,29 +167,39 @@ export default function Select(props: SelectProps) {
         break;
       case "ArrowUp":
         console.log("위쪽 화살표 키가 눌렸습니다.");
-        setOnEnterItem((prevState) => {
-          if (prevState) {
-            const currentValue = Number(prevState?.value);
-            return options?.find(
-              (item) => item.value === String(currentValue - 1)
-            );
-          } else {
-            return options && options[99];
-          }
-        });
+        if (isOptionToggle) {
+          setOnEnterItem((prevState) => {
+            if (prevState) {
+              const currentValue = Number(prevState?.value);
+              return options?.find(
+                (item) => item.value === String(currentValue - 1)
+              );
+            } else {
+              return options && options[99];
+            }
+          });
+        } else {
+          setIsOptionToggle(true);
+        }
+
         break;
       case "ArrowDown":
+        if (isOptionToggle) {
+          setOnEnterItem((prevState) => {
+            if (prevState) {
+              const currentValue = Number(prevState?.value);
+              return options?.find(
+                (item) => item.value === String(currentValue + 1)
+              );
+            } else {
+              return options && options[0];
+            }
+          });
+        } else {
+          setIsOptionToggle(true);
+        }
         console.log("아래쪽 화살표 키가 눌렸습니다.");
-        setOnEnterItem((prevState) => {
-          if (prevState) {
-            const currentValue = Number(prevState?.value);
-            return options?.find(
-              (item) => item.value === String(currentValue + 1)
-            );
-          } else {
-            return options && options[0];
-          }
-        });
+
         break;
       default:
         break;
@@ -250,7 +265,7 @@ export default function Select(props: SelectProps) {
       </div>
       <div
         ref={selectRef}
-        className={`base-popper-root ${isFocused && "open"}`}
+        className={`base-popper-root ${isFocused && isOptionToggle && "open"}`}
       >
         {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
         {selectOptionActive === undefined && inputValue?.length === 0 && (
@@ -286,7 +301,7 @@ export default function Select(props: SelectProps) {
           />
         )}
         {/* 4. focus상태이고 선택된 항목이 있을때 */}
-        {isFocused && selectOptionActive && (
+        {isOptionToggle && selectOptionActive && (
           <OptionItem
             options={options}
             onClickOptionItem={onClickOptionItem}
