@@ -52,9 +52,9 @@ export default function Select(props: SelectProps) {
       const top_height =
         windowSize.height - bottom_height - SELECT_OPTION.HEIGHT;
 
-      console.log("윈도우 사이즈", windowSize.height);
-      console.log("top_height", top_height);
-      console.log("bottom_height", bottom_height);
+      // console.log("윈도우 사이즈", windowSize.height);
+      // console.log("top_height", top_height);
+      // console.log("bottom_height", bottom_height);
       setAvailableSpace({ top: top_height, bottom: bottom_height });
     }
   }, [selectRef, windowSize]);
@@ -242,117 +242,126 @@ export default function Select(props: SelectProps) {
   };
 
   return (
-    <div className="select-component" ref={selectRef}>
-      <div
-        className={`MuiAutocomplete-root`}
-        style={{ width: `${selectMaxWidth}px` }}
-        onKeyDown={onKeyboardHandler}
-        tabIndex={0}
-      >
-        <div className="MuiFormControl-root">
-          {/* <label className="MuiFormLabel-root">Movie</label> */}
+    <>
+      {options ? (
+        <div className="select-component" ref={selectRef}>
           <div
-            className={`MuiInputBase-root ${isFocused && "focused"} ${
-              selectOptionActive && "clearVisible"
-            }`}
+            className={`MuiAutocomplete-root`}
+            style={{ width: `${selectMaxWidth}px` }}
+            onKeyDown={onKeyboardHandler}
+            tabIndex={0}
           >
-            <input
-              className="MuiInputBase-input"
-              ref={inputRef}
-              type="text"
-              value={inputValue}
-              onClick={onClickFocusOnHandler}
-              onFocus={onFocusHandler}
-              onBlur={onBlurHandler}
-              onChange={handleInputChange}
-              placeholder={"Movie"}
-            />
-            <div className="MuiAutocomplete-endAdornment">
-              <button
-                className={`MuiAutocomplete-clearIndicator ${
-                  selectOptionActive &&
-                  inputValue.length > 0 &&
-                  "clearIndicator-visible"
+            <div className="MuiFormControl-root">
+              {/* <label className="MuiFormLabel-root">Movie</label> */}
+              <div
+                className={`MuiInputBase-root ${isFocused && "focused"} ${
+                  selectOptionActive && "clearVisible"
                 }`}
-                onClick={onClickClearInputSearch}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                }}
               >
-                <svg>
-                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                </svg>
-              </button>
-              <button
-                className="MuiAutocomplete-arrowIndicator"
-                onClick={onToggleOptionList}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                <svg>
-                  <path d="M7 10l5 5 5-5z"></path>
-                </svg>
-              </button>
+                <input
+                  className="MuiInputBase-input"
+                  ref={inputRef}
+                  type="text"
+                  value={inputValue}
+                  onClick={onClickFocusOnHandler}
+                  onFocus={onFocusHandler}
+                  onBlur={onBlurHandler}
+                  onChange={handleInputChange}
+                  placeholder={"Movie"}
+                />
+                <div className="MuiAutocomplete-endAdornment">
+                  <button
+                    className={`MuiAutocomplete-clearIndicator ${
+                      selectOptionActive &&
+                      inputValue.length > 0 &&
+                      "clearIndicator-visible"
+                    }`}
+                    onClick={onClickClearInputSearch}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <svg>
+                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                    </svg>
+                  </button>
+                  <button
+                    className="MuiAutocomplete-arrowIndicator"
+                    onClick={onToggleOptionList}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <svg>
+                      <path d="M7 10l5 5 5-5z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div
-        className={`base-popper-root ${isFocused && isOptionToggle && "open"} ${
-          availableSpace?.top &&
-          availableSpace?.bottom &&
-          availableSpace.top > availableSpace.bottom &&
-          "base-popper-root_bottom"
-        }`}
-        style={{ width: `${selectMaxWidth > 300 && selectMaxWidth}px` }}
-      >
-        <div className="base-popper-content" ref={optionRef}>
-          {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
-          {selectOptionActive === undefined && inputValue?.length === 0 && (
-            <OptionItem
-              options={options}
-              onClickOptionItem={onClickOptionItem}
-              onMouseOverHandler={onMouseOverHandler}
-              activeItem={selectOptionActive}
-              hoverItem={enterItem}
-            />
-          )}
-          {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
-          {selectOptionActive === undefined &&
-            inputValue &&
-            inputValue?.length > 0 && (
-              <OptionItem
-                options={optionSearchList}
-                onClickOptionItem={onClickOptionItem}
-                onMouseOverHandler={onMouseOverHandler}
-                activeItem={selectOptionActive}
-                hoverItem={enterItem}
-              />
-            )}
+          {options && options.length > 0 && (
+            <div
+              className={`base-popper-root ${
+                isFocused && isOptionToggle && "open"
+              } ${
+                availableSpace?.top &&
+                availableSpace?.bottom &&
+                availableSpace.top > availableSpace.bottom &&
+                "base-popper-root_bottom"
+              }`}
+              style={{ width: `${selectMaxWidth > 300 && selectMaxWidth}px` }}
+            >
+              <div className="base-popper-content" ref={optionRef}>
+                {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
+                {selectOptionActive === undefined &&
+                  inputValue?.length === 0 && (
+                    <OptionItem
+                      options={options}
+                      onClickOptionItem={onClickOptionItem}
+                      onMouseOverHandler={onMouseOverHandler}
+                      activeItem={selectOptionActive}
+                      hoverItem={enterItem}
+                    />
+                  )}
+                {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
+                {selectOptionActive === undefined &&
+                  inputValue &&
+                  inputValue?.length > 0 && (
+                    <OptionItem
+                      options={optionSearchList}
+                      onClickOptionItem={onClickOptionItem}
+                      onMouseOverHandler={onMouseOverHandler}
+                      activeItem={selectOptionActive}
+                      hoverItem={enterItem}
+                    />
+                  )}
 
-          {/* 3. 선택항목이 있을때 > 선택항목이 Active 된 option list */}
-          {selectOptionActive && (
-            <OptionItem
-              options={options}
-              onClickOptionItem={onClickOptionItem}
-              onMouseOverHandler={onMouseOverHandler}
-              activeItem={selectOptionActive}
-              hoverItem={enterItem}
-            />
-          )}
-          {/* 4. focus상태이고 선택된 항목이 있을때 */}
-          {isOptionToggle && selectOptionActive && (
-            <OptionItem
-              options={options}
-              onClickOptionItem={onClickOptionItem}
-              onMouseOverHandler={onMouseOverHandler}
-              activeItem={selectOptionActive}
-              hoverItem={enterItem}
-            />
+                {/* 3. 선택항목이 있을때 > 선택항목이 Active 된 option list */}
+                {selectOptionActive && (
+                  <OptionItem
+                    options={options}
+                    onClickOptionItem={onClickOptionItem}
+                    onMouseOverHandler={onMouseOverHandler}
+                    activeItem={selectOptionActive}
+                    hoverItem={enterItem}
+                  />
+                )}
+                {/* 4. focus상태이고 선택된 항목이 있을때 */}
+                {isOptionToggle && selectOptionActive && (
+                  <OptionItem
+                    options={options}
+                    onClickOptionItem={onClickOptionItem}
+                    onMouseOverHandler={onMouseOverHandler}
+                    activeItem={selectOptionActive}
+                    hoverItem={enterItem}
+                  />
+                )}
+              </div>
+            </div>
           )}
         </div>
-      </div>
-    </div>
+      ) : null}
+    </>
   );
 }
