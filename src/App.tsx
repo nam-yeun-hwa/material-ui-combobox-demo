@@ -6,7 +6,6 @@ import Select from "./components/Select";
 import { selectOptionType } from "type/data";
 
 function App() {
-  const [selectedValue, setSelectedValue] = useState<string>();
   const [data, setData] = useState<selectOptionType>();
 
   useEffect(() => {
