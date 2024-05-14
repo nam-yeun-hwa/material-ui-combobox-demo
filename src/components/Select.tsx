@@ -288,65 +288,63 @@ export default function Select(props: SelectProps) {
             </div>
           </div>
         </div>
-        {options && options.length > 0 && (
-          <div
-            className={`base-popper-root ${
-              isFocused && isOptionToggle && "open"
-            } ${
-              availableSpace?.top &&
-              availableSpace?.bottom &&
-              availableSpace.top > availableSpace.bottom &&
-              "base-popper-root_bottom"
-            }`}
-            style={{ width: `${selectMaxWidth > 300 && selectMaxWidth}px` }}
-          >
-            <div className="base-popper-content" ref={optionRef}>
-              {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
-              {selectOptionActive === undefined && inputValue?.length === 0 && (
+        <div
+          className={`base-popper-root ${
+            isFocused && isOptionToggle && "open"
+          } ${
+            availableSpace?.top &&
+            availableSpace?.bottom &&
+            availableSpace.top > availableSpace.bottom &&
+            "base-popper-root_bottom"
+          }`}
+          style={{ width: `${selectMaxWidth > 300 && selectMaxWidth}px` }}
+        >
+          <div className="base-popper-content" ref={optionRef}>
+            {/* 1. 선택항목이 없고 input값이 없을때 > 오리지날 option list*/}
+            {selectOptionActive === undefined && inputValue?.length === 0 && (
+              <OptionItem
+                options={options}
+                onClickOptionItem={onClickOptionItem}
+                onMouseOverHandler={onMouseOverHandler}
+                activeItem={selectOptionActive}
+                hoverItem={enterItem}
+              />
+            )}
+            {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
+            {selectOptionActive === undefined &&
+              inputValue &&
+              inputValue?.length > 0 && (
                 <OptionItem
-                  options={options}
+                  options={optionSearchList}
                   onClickOptionItem={onClickOptionItem}
                   onMouseOverHandler={onMouseOverHandler}
                   activeItem={selectOptionActive}
                   hoverItem={enterItem}
                 />
               )}
-              {/* 2. 선택항목이 없고 검색 input이 있을때 > 검색리스트 */}
-              {selectOptionActive === undefined &&
-                inputValue &&
-                inputValue?.length > 0 && (
-                  <OptionItem
-                    options={optionSearchList}
-                    onClickOptionItem={onClickOptionItem}
-                    onMouseOverHandler={onMouseOverHandler}
-                    activeItem={selectOptionActive}
-                    hoverItem={enterItem}
-                  />
-                )}
 
-              {/* 3. 선택항목이 있을때 > 선택항목이 Active 된 option list */}
-              {selectOptionActive && (
-                <OptionItem
-                  options={options}
-                  onClickOptionItem={onClickOptionItem}
-                  onMouseOverHandler={onMouseOverHandler}
-                  activeItem={selectOptionActive}
-                  hoverItem={enterItem}
-                />
-              )}
-              {/* 4. focus상태이고 선택된 항목이 있을때 */}
-              {isOptionToggle && selectOptionActive && (
-                <OptionItem
-                  options={options}
-                  onClickOptionItem={onClickOptionItem}
-                  onMouseOverHandler={onMouseOverHandler}
-                  activeItem={selectOptionActive}
-                  hoverItem={enterItem}
-                />
-              )}
-            </div>
+            {/* 3. 선택항목이 있을때 > 선택항목이 Active 된 option list */}
+            {selectOptionActive && (
+              <OptionItem
+                options={options}
+                onClickOptionItem={onClickOptionItem}
+                onMouseOverHandler={onMouseOverHandler}
+                activeItem={selectOptionActive}
+                hoverItem={enterItem}
+              />
+            )}
+            {/* 4. focus상태이고 선택된 항목이 있을때 */}
+            {isOptionToggle && selectOptionActive && (
+              <OptionItem
+                options={options}
+                onClickOptionItem={onClickOptionItem}
+                onMouseOverHandler={onMouseOverHandler}
+                activeItem={selectOptionActive}
+                hoverItem={enterItem}
+              />
+            )}
           </div>
-        )}
+        </div>
       </div>
     </>
   );
