@@ -32,7 +32,7 @@ export default function OptionItem({
               e.preventDefault();
             }}
           >
-            [{item.value}]-{item.label}
+            {item.label}
           </div>
         );
       })}
