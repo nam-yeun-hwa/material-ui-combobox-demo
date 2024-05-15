@@ -264,6 +264,7 @@ export default function Select(props: SelectProps) {
               />
               <div className="MuiAutocomplete-endAdornment">
                 <Button
+                  dataTestId={"clear"}
                   activeClass={`MuiAutocomplete-clearIndicator ${
                     selectOptionActive &&
                     inputValue.length > 0 &&
@@ -278,6 +279,7 @@ export default function Select(props: SelectProps) {
                 />
 
                 <Button
+                  dataTestId={"toggle"}
                   activeClass="MuiAutocomplete-arrowIndicator"
                   children={
                     <svg>

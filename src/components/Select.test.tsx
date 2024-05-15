@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Select from "./Select";
+import Button from "./Button";
 
 const options = [
   { value: "1", label: "Option 1" },
@@ -35,5 +36,27 @@ describe("<Select />", () => {
     ) as HTMLInputElement;
     fireEvent.change(inputElement, { target: { value: "Lord" } });
     expect(inputElement.value).toBe("Lord");
+  });
+
+  test("clears input value when clear button is clicked", () => {
+    render(<Select options={options} />);
+    const inputElement = screen.getByPlaceholderText(
+      "Movie"
+    ) as HTMLInputElement;
+    fireEvent.change(inputElement, { target: { value: "Lord" } });
+    expect(inputElement.value).toBe("Lord");
+
+    const onClickHandler = jest.fn();
+    render(
+      <Button dataTestId="" onClickHandler={onClickHandler}>
+        Click Me
+      </Button>
+    );
+
+    const clearBtn = screen.getByTestId("clear");
+    // clear 버튼 클릭
+    fireEvent.click(clearBtn);
+    // 값이 비워졌는지 확인
+    expect(inputElement.value).toBe("");
   });
 });
