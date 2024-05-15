@@ -232,7 +232,7 @@ export default function Select(props: SelectProps) {
 
   return (
     <>
-      <div className="select-component" ref={selectRef}>
+      <div className={`select-component`} ref={selectRef}>
         <div
           className={`MuiAutocomplete-root`}
           style={{ width: `${selectMaxWidth}px` }}

@@ -5,7 +5,7 @@ const config: Config.InitialOptions = {
   testEnvironment: "jsdom",
   // testEnvironment: "node",
   verbose: true,
-  collectCoverage: true,
+  // collectCoverage: true,
 
   // Jest 특정경로 테스트 진행 X
   testPathIgnorePatterns: ["<rootDir>/cypress/"],

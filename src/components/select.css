@@ -1,14 +1,11 @@
 .select-component {
   position: relative;
-  /* height: 300px; */
-  /* height: 100vh; */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* flex: 1; */
-  /* padding: 24px; */
-  /* overflow: hidden; */
+  opacity: 1;
 }
 
+.show {
+  opacity: 1;
+}
 /* MuiAutocomplete-root */
 .MuiAutocomplete-root {
   /* min-width: 300px; */
