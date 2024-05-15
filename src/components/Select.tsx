@@ -93,6 +93,7 @@ export default function Select(props: SelectProps) {
   useEffect(() => {
     if (inputValue.length === 0) {
       setSelectOptionActive(undefined);
+      setIsOptionToggle(true);
     }
   }, [inputValue]);
 
@@ -141,6 +142,7 @@ export default function Select(props: SelectProps) {
    */
   const onClickClearInputSearch = () => {
     setInputValue("");
+
     setIsFocused(true);
     setOnEnterItem(undefined);
     setSelectOptionActive(undefined);
