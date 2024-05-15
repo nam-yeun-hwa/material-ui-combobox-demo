@@ -1,6 +1,6 @@
 type Props = {
   children: React.ReactNode;
-  activeClass: string;
+  activeClass?: string;
   onClickHandler: () => void;
 };
 
