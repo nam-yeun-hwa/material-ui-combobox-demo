@@ -1,6 +1,6 @@
 import "./App.css";
 import "./components/select.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchTop100Films } from "./fetch/fetchTop100Films";
 import Select from "./components/Select";
 import { selectOptionType } from "type/data";

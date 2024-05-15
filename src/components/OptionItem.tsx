@@ -21,6 +21,7 @@ export default function OptionItem({
       {options?.map((item) => {
         return (
           <div
+            data-testid="option-list"
             key={item.value}
             className={`option-item ${
               (hoverItem?.value === item.value && "hover-option-item ") ||
