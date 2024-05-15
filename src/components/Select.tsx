@@ -4,6 +4,7 @@ import "./select.css";
 import OptionItem from "./OptionItem";
 import useWindowSize from "../hook/useWindowSize.ts";
 import { SELECT_OPTION } from "../constant/constant";
+import Button from "./Button.tsx";
 
 type SelectProps = {
   options: selectOptionType | undefined;
@@ -262,32 +263,29 @@ export default function Select(props: SelectProps) {
                 placeholder={"Movie"}
               />
               <div className="MuiAutocomplete-endAdornment">
-                <button
-                  className={`MuiAutocomplete-clearIndicator ${
+                <Button
+                  activeClass={`MuiAutocomplete-clearIndicator ${
                     selectOptionActive &&
                     inputValue.length > 0 &&
                     "clearIndicator-visible"
                   }`}
-                  onClick={onClickClearInputSearch}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  <svg>
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                  </svg>
-                </button>
-                <button
-                  className="MuiAutocomplete-arrowIndicator"
-                  onClick={onToggleOptionList}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  <svg>
-                    <path d="M7 10l5 5 5-5z"></path>
-                  </svg>
-                </button>
+                  children={
+                    <svg>
+                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                    </svg>
+                  }
+                  onClickHandler={onClickClearInputSearch}
+                />
+
+                <Button
+                  activeClass="MuiAutocomplete-arrowIndicator"
+                  children={
+                    <svg>
+                      <path d="M7 10l5 5 5-5z"></path>
+                    </svg>
+                  }
+                  onClickHandler={onToggleOptionList}
+                />
               </div>
             </div>
           </div>

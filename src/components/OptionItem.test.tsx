@@ -8,7 +8,7 @@ describe("OptionItem Component", () => {
     { value: "3", label: "Option 3" },
   ];
 
-  test("renders option items correctly", () => {
+  test("OptionItem이 올바르게 렌더링되는지 확인", () => {
     const { getByText } = render(
       <OptionItem
         options={options}
@@ -22,7 +22,7 @@ describe("OptionItem Component", () => {
     });
   });
 
-  test("calls onClickOptionItem when an option is clicked", () => {
+  test("옵션이 클릭되면 onClickOptionItem이 호출되는지 확인", () => {
     const onClickOptionItem = jest.fn();
 
     const { getByText } = render(
@@ -38,9 +38,10 @@ describe("OptionItem Component", () => {
     fireEvent.click(optionElement);
 
     expect(onClickOptionItem).toHaveBeenCalledWith(option);
+    // 옵션이 클릭되고 css가 잘 적용이 되는지 확인 하는 코드
   });
 
-  test("calls onMouseOverHandler when mouse is over an option", () => {
+  test("마우스오버 이벤트시 onMouseOverHandler가 호출되는지 확인", () => {
     const onMouseOverHandler = jest.fn();
 
     const { getByText } = render(
@@ -56,5 +57,6 @@ describe("OptionItem Component", () => {
     fireEvent.mouseOver(optionElement);
 
     expect(onMouseOverHandler).toHaveBeenCalledWith(option);
+    // 옵션이 클릭되고 css가 잘 적용이 되는지 확인 하는 코드
   });
 });

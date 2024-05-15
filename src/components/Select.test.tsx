@@ -14,13 +14,13 @@ describe("<Select />", () => {
     expect(selectComponent).toBeInTheDocument();
   });
 
-  test("입력창이 올바르게 렌더링되는지 확인", () => {
+  test("input이 올바르게 렌더링되는지 확인", () => {
     render(<Select options={options} />);
     const inputElement = screen.getByPlaceholderText("Movie");
     expect(inputElement).toBeInTheDocument();
   });
 
-  test("입력값에 따라 옵션 리스트가 필터링되는지 확인", () => {
+  test("input 입력값에 따라 옵션 리스트가 필터링되는지 확인", () => {
     render(<Select options={options} />);
     const inputElement = screen.getByPlaceholderText("Movie");
     fireEvent.change(inputElement, { target: { value: "Option 1" } });
@@ -28,7 +28,7 @@ describe("<Select />", () => {
     expect(filteredOption).toBeInTheDocument();
   });
 
-  test("클릭 이벤트가 올바르게 동작하는지 확인", () => {
+  test("input change 이벤트가 올바르게 동작하는지 확인", () => {
     render(<Select options={options} />);
     const inputElement = screen.getByPlaceholderText(
       "Movie"

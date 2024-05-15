@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.54% </span>
+                <span class="strong">53.12% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>50/97</span>
+                <span class='fraction'>51/96</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.36% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/22</span>
+                <span class='fraction'>8/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.54% </span>
+                <span class="strong">53.12% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>50/97</span>
+                <span class='fraction'>51/96</span>
             </div>
         
             
@@ -416,10 +416,9 @@
 <a name='L351'></a><a href='#L351'>351</a>
 <a name='L352'></a><a href='#L352'>352</a>
 <a name='L353'></a><a href='#L353'>353</a>
-<a name='L354'></a><a href='#L354'>354</a>
-<a name='L355'></a><a href='#L355'>355</a>
-<a name='L356'></a><a href='#L356'>356</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L354'></a><a href='#L354'>354</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -690,7 +689,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -700,8 +698,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -779,6 +775,7 @@ import "./select.css";
 import OptionItem from "./OptionItem";
 import useWindowSize from "../hook/useWindowSize.ts";
 import { SELECT_OPTION } from "../constant/constant";
+import Button from "./Button.tsx";
 &nbsp;
 type SelectProps = {
   options: selectOptionType | undefined;
@@ -1037,32 +1034,29 @@ export default function Select(props: SelectProps) {
                 placeholder={"Movie"}
               /&gt;
               &lt;div className="MuiAutocomplete-endAdornment"&gt;
-                &lt;button
-                  className={`MuiAutocomplete-clearIndicator ${
+                &lt;Button
+                  activeClass={`MuiAutocomplete-clearIndicator ${
                     selectOptionActive &amp;&amp;
 <span class="branch-1 cbranch-no" title="branch not covered" >                    inputValue.length &gt; 0 </span>&amp;&amp;
 <span class="branch-2 cbranch-no" title="branch not covered" >                    "clearIndicator-visible"</span>
                   }`}
-                  onClick={onClickClearInputSearch}
-                  onMouseDown={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >                    e.preventDefault();</span>
-                  }}
-                &gt;
-                  &lt;svg&gt;
-                    &lt;path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"&gt;&lt;/path&gt;
-                  &lt;/svg&gt;
-                &lt;/button&gt;
-                &lt;button
-                  className="MuiAutocomplete-arrowIndicator"
-                  onClick={onToggleOptionList}
-                  onMouseDown={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >                    e.preventDefault();</span>
-                  }}
-                &gt;
-                  &lt;svg&gt;
-                    &lt;path d="M7 10l5 5 5-5z"&gt;&lt;/path&gt;
-                  &lt;/svg&gt;
-                &lt;/button&gt;
+                  children={
+                    &lt;svg&gt;
+                      &lt;path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                  }
+                  onClickHandler={onClickClearInputSearch}
+                /&gt;
+&nbsp;
+                &lt;Button
+                  activeClass="MuiAutocomplete-arrowIndicator"
+                  children={
+                    &lt;svg&gt;
+                      &lt;path d="M7 10l5 5 5-5z"&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                  }
+                  onClickHandler={onToggleOptionList}
+                /&gt;
               &lt;/div&gt;
             &lt;/div&gt;
           &lt;/div&gt;
@@ -1135,7 +1129,7 @@ export default function Select(props: SelectProps) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-15T05:12:44.888Z
+                at 2024-05-15T06:00:59.832Z
             </div>
         <script src="prettify.js"></script>
         <script>
