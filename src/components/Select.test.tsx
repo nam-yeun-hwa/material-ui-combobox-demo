@@ -10,9 +10,10 @@ const options = [
 
 describe("<Select />", () => {
   test("Select 컴포넌트가 렌더링되는지 확인", () => {
-    render(<Select options={options} />);
+    const { container } = render(<Select options={options} />);
     const selectComponent = screen.getByTestId("select-component");
     expect(selectComponent).toBeInTheDocument();
+    expect(container).toMatchSnapshot();
   });
 
   test("input이 올바르게 렌더링되는지 확인", () => {
@@ -38,7 +39,7 @@ describe("<Select />", () => {
     expect(inputElement.value).toBe("Lord");
   });
 
-  test("clears input value when clear button is clicked", () => {
+  test("클리어 버튼 클릭 시 input에 내용이 지워지는지 확인", () => {
     render(<Select options={options} />);
     const inputElement = screen.getByPlaceholderText(
       "Movie"
@@ -58,5 +59,37 @@ describe("<Select />", () => {
     fireEvent.click(clearBtn);
     // 값이 비워졌는지 확인
     expect(inputElement.value).toBe("");
+  });
+
+  test("셀렉트 컴포넌트 토글버튼 클릭 이벤트가 잘 동작하는지 확인", () => {
+    const handlerClick = jest.fn();
+    const { getByTestId } = render(
+      <Button dataTestId="toggle" onClickHandler={handlerClick}>
+        toggle button
+      </Button>
+    );
+    expect(handlerClick).toHaveBeenCalledTimes(0);
+    const toggleBtn = getByTestId("toggle");
+    fireEvent.click(toggleBtn);
+
+    expect(handlerClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("onKeyboardHandler 잘 동작하는지 확인", () => {
+    const onKeyboardHandler = jest.fn();
+    const { container } = render(<Select options={options} />);
+
+    const divElement = container.querySelector(
+      ".MuiAutocomplete-root"
+    ) as HTMLDivElement;
+
+    fireEvent.keyDown(divElement, { key: "Enter" });
+    expect(onKeyboardHandler).toHaveBeenCalledTimes(0);
+
+    fireEvent.keyDown(divElement, { key: "ArrowUp" });
+    expect(onKeyboardHandler).toHaveBeenCalledTimes(0);
+
+    fireEvent.keyDown(divElement, { key: "ArrowDown" });
+    expect(onKeyboardHandler).toHaveBeenCalledTimes(0);
   });
 });

@@ -128,8 +128,6 @@ export default function Select(props: SelectProps) {
    * @description 클릭한 옵션
    */
   const onClickOptionItem = (optionItem: optionItem) => {
-    console.log("옵션선택", optionItem);
-    // setIsFocused(false);
     setIsOptionToggle(false);
     if (optionItem) {
       setInputValue(optionItem.label);
@@ -174,7 +172,6 @@ export default function Select(props: SelectProps) {
    * @param optionItem
    */
   const onMouseOverHandler = (optionItem: optionItem) => {
-    // onClickOptionItem(optionItem);
     setOnEnterItem(optionItem);
   };
 
@@ -293,6 +290,7 @@ export default function Select(props: SelectProps) {
           </div>
         </div>
         <div
+          data-testid="optionToggle"
           className={`base-popper-root ${
             isFocused && isOptionToggle && "open"
           } ${
