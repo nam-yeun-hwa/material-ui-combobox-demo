@@ -37,6 +37,7 @@
 
 /* MuiInputBase-root */
 .MuiInputBase-root {
+  /* box-sizing: border-box; */
   position: relative;
   width: 100%;
   display: inline-flex;
@@ -70,6 +71,7 @@
 /* .MuiInputBase-root가 focus 상태일때 */
 .focused {
   outline: 2px solid #3874cb;
+  /* border: 2px solid #3874cb; */
   border-color: transparent !important;
 }
 
@@ -267,6 +269,7 @@ fieldset:hover {
 .base-popper-root {
   box-sizing: border-box;
   position: absolute;
+  width: 300px;
   top: 60px;
   /* bottom: 60px; */
 

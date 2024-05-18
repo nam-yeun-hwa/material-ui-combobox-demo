@@ -1,8 +1,11 @@
 .option-item {
   cursor: pointer;
   text-align: left;
-  white-space: nowrap;
-  padding: 15px 8px;
+  word-wrap: break-word;
+  word-break: keep-all;
+  line-height: 140%;
+  font-size: 1.05rem;
+  padding: 10px 8px;
 }
 
 /* .option-item:hover {
