@@ -1,34 +1,38 @@
 import { optionItem, selectOptionType } from "type/data";
 import "./optionItem.css";
+import { useEffect } from "react";
 
 type Props = {
-  options?: selectOptionType;
-  onClickOptionItem: (option: optionItem) => void;
-  onMouseOverHandler: (option: optionItem) => void;
-  activeItem?: optionItem;
-  hoverItem?: optionItem;
+  options: selectOptionType;
+  // onClickOptionItem: (option: optionItem) => void;
+  // onMouseOverHandler: (option: optionItem) => void;
+  // activeItem?: optionItem;
+  // hoverItem?: optionItem;
 };
 
 export default function OptionItem({
   options,
-  onClickOptionItem,
-  onMouseOverHandler,
-  activeItem,
-  hoverItem,
-}: Props) {
+}: // onClickOptionItem,
+// onMouseOverHandler,
+// activeItem,
+// hoverItem,
+Props) {
+  useEffect(() => {
+    console.log(options);
+  }, [options]);
   return (
     <>
-      {options?.map((item) => {
+      {options.map((item) => {
         return (
           <div
             data-testid="option-list"
             key={item.value}
-            className={`option-item ${
-              (hoverItem?.value === item.value && "hover-option-item ") ||
-              (activeItem?.value === item.value && "active-option-item")
-            }`}
-            onClick={() => onClickOptionItem(item)}
-            onMouseOver={() => onMouseOverHandler(item)}
+            // className={`option-item ${
+            //   (hoverItem?.value === item.value && "hover-option-item ") ||
+            //   (activeItem?.value === item.value && "active-option-item")
+            // }`}
+            // onClick={() => onClickOptionItem(item)}
+            // onMouseOver={() => onMouseOverHandler(item)}
             onMouseDown={(e) => {
               e.preventDefault();
             }}
