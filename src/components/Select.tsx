@@ -6,34 +6,34 @@ import useWindowSize from "../hook/useWindowSize.ts";
 import { SELECT_OPTION } from "../constant/constant";
 import Button from "./Button.tsx";
 
-// type SelectProps = {
-//   options: selectOptionType | undefined;
-// };
-
 type SelectProps = {
   isFocused: Boolean;
+  isToggle: Boolean;
   onSelect: (select: optionItem) => void;
   inputValue: string;
   options: selectOptionType;
   onChange: (value: string) => void;
+  onHover: (select: optionItem) => void;
   onFocus: () => void;
   onBlur: () => void;
+  onClick: () => void;
   onToggle: () => void;
   onClear: () => void;
-  onClickFocusOnHandler: () => void;
 };
 
 export default function Select({
   isFocused,
+  isToggle,
   onSelect,
   inputValue,
   options,
   onChange,
   onFocus,
   onBlur,
+  onHover,
   onToggle,
   onClear,
-  onClickFocusOnHandler,
+  onClick,
 }: SelectProps) {
   const optionRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -45,6 +45,14 @@ export default function Select({
     top: Number | undefined;
     bottom: Number | undefined;
   }>();
+
+  useEffect(() => {
+    console.log("isToggle", isToggle);
+  }, [isToggle]);
+
+  useEffect(() => {
+    console.log("options", options);
+  }, [options]);
 
   /**
    * @description select 엘레멘트 Y값 가져오기
@@ -239,9 +247,8 @@ export default function Select({
           tabIndex={0}
         >
           <div className="MuiFormControl-root">
-            {/* <label className="MuiFormLabel-root">Movie</label> */}
             <div
-              className={`MuiInputBase-root ${"isFocused" && "focused"} ${
+              className={`MuiInputBase-root ${isFocused && "focused"} ${
                 "selectOptionActive" && "clearVisible"
               }`}
             >
@@ -250,7 +257,7 @@ export default function Select({
                 ref={inputRef}
                 type="text"
                 value={inputValue}
-                onClick={onClickFocusOnHandler}
+                onClick={onClick}
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChange={(e) => onChange(e.target.value)}
@@ -269,7 +276,12 @@ export default function Select({
                       <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                     </svg>
                   }
-                  onClickHandler={onClear}
+                  onClickHandler={() => {
+                    onClear();
+                    if (inputRef.current) {
+                      inputRef.current.focus();
+                    }
+                  }}
                 />
 
                 <Button
@@ -296,16 +308,14 @@ export default function Select({
           }`}
         >
           <div className="base-popper-content" ref={optionRef}>
-            {
+            {isToggle && (
               <OptionItem
                 options={options}
-                // onClickOptionItem={onClickOptionItem}
-                // onMouseOverHandler={onMouseOverHandler}
-                // activeItem={selectOptionActive}
-                // hoverItem={enterItem}
+                onSelect={onSelect}
+                onHover={onHover}
               />
-            }
-            {<div>aslkfjaskfl j</div>}
+            )}
+            {/* {<div>test</div>} */}
           </div>
         </div>
       </div>

@@ -4,22 +4,11 @@ import { useEffect } from "react";
 
 type Props = {
   options: selectOptionType;
-  // onClickOptionItem: (option: optionItem) => void;
-  // onMouseOverHandler: (option: optionItem) => void;
-  // activeItem?: optionItem;
-  // hoverItem?: optionItem;
+  onSelect: (option: optionItem) => void;
+  onHover: (option: optionItem) => void;
 };
 
-export default function OptionItem({
-  options,
-}: // onClickOptionItem,
-// onMouseOverHandler,
-// activeItem,
-// hoverItem,
-Props) {
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
+export default function OptionItem({ options, onSelect, onHover }: Props) {
   return (
     <>
       {options.map((item) => {
@@ -27,12 +16,13 @@ Props) {
           <div
             data-testid="option-list"
             key={item.value}
-            // className={`option-item ${
-            //   (hoverItem?.value === item.value && "hover-option-item ") ||
-            //   (activeItem?.value === item.value && "active-option-item")
-            // }`}
-            // onClick={() => onClickOptionItem(item)}
-            // onMouseOver={() => onMouseOverHandler(item)}
+            className={
+              `option-item `
+              // (hoverItem?.value === item.value && "hover-option-item ") ||
+              // (activeItem?.value === item.value && "active-option-item")
+            }
+            onClick={() => onSelect(item)}
+            onMouseOver={() => onHover(item)}
             onMouseDown={(e) => {
               e.preventDefault();
             }}
