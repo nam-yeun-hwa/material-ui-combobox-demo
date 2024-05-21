@@ -1,3 +1,17 @@
+# combobox with material-ui
+material-ui중 combobox를 데모 버전으로 만들어 보도록 한다. 
+
+1. 프론트엔드로만 구성
+2. mui의 기존 디자인과 기능을 바탕으로 구성하며 계속적으로 조금씩 기능을 업데이트할 예정이다.
+3. TDD를 적용
+4. 점진적인 리팩토링
+
+참고 링크 : https://mui.com/material-ui/react-autocomplete/#combo-box
+
+
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
