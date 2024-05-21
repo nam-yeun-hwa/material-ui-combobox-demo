@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { fetchTop100Films } from "./fetch/fetchLoading";
 import Select from "./components/Select";
 import { optionItem, selectOptionType } from "type/data";
+import OptionList from "./components/OptionList";
 
 function App() {
   const [options, setOptions] = useState<selectOptionType>([]);
@@ -22,6 +23,14 @@ function App() {
     };
     fetchData();
   }, [options]);
+
+  useEffect(() => {
+    console.log("isToggle", isToggle);
+  }, [isToggle]);
+
+  useEffect(() => {
+    console.log("options", options);
+  }, [isToggle]);
 
   /**
    * @function onChange
@@ -116,6 +125,57 @@ function App() {
     // setOnEnterItem(optionItem);
   };
 
+  /**
+   * @function onKeyboardHandler
+   * @description 키보드 이벤트
+   */
+  const onkeyboard = (keyCode: string) => {
+    // switch (e.key) {
+    //   case "Enter":
+    //     console.log("Enter 키가 눌렸습니다.");
+    //     if (enterItem) {
+    //       onClickOptionItem(enterItem);
+    //     }
+    //     break;
+    //   case "ArrowUp":
+    //     console.log("위쪽 화살표 키가 눌렸습니다.");
+    //     if (isOptionToggle) {
+    //       setOnEnterItem((prevState) => {
+    //         if (prevState) {
+    //           const currentValue = Number(prevState?.value);
+    //           return options?.find(
+    //             (item) => item.value === String(currentValue - 1)
+    //           );
+    //         } else {
+    //           return options && options[99];
+    //         }
+    //       });
+    //     } else {
+    //       setIsOptionToggle(true);
+    //     }
+    //     break;
+    //   case "ArrowDown":
+    //     if (isOptionToggle) {
+    //       setOnEnterItem((prevState) => {
+    //         if (prevState) {
+    //           const currentValue = Number(prevState?.value);
+    //           return options?.find(
+    //             (item) => item.value === String(currentValue + 1)
+    //           );
+    //         } else {
+    //           return options && options[0];
+    //         }
+    //       });
+    //     } else {
+    //       setIsOptionToggle(true);
+    //     }
+    //     console.log("아래쪽 화살표 키가 눌렸습니다.");
+    //     break;
+    //   default:
+    //     break;
+    // }
+  };
+
   return (
     <div className="container">
       <div className="contents">
@@ -123,16 +183,24 @@ function App() {
           isFocused={isFocused}
           isToggle={isToggle}
           inputValue={inputValue || ""}
-          options={filteredOptions.length > 0 ? filteredOptions : options}
-          onSelect={onSelect}
-          onHover={onHover}
+          // options={filteredOptions.length > 0 ? filteredOptions : options}
+          // onSelect={onSelect}
+          // onHover={onHover}
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}
           onToggle={onToggle}
           onClear={onClear}
           onClick={onClick}
-        />
+        >
+          <OptionList
+            onkeyboard={onkeyboard}
+            // options={options}
+            options={filteredOptions.length > 0 ? filteredOptions : options}
+            onSelect={onSelect}
+            onHover={onHover}
+          />
+        </Select>
       </div>
     </div>
   );

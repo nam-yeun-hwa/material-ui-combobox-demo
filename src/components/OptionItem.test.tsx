@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react";
-import OptionItem from "./OptionItem";
+import OptionItem from "./OptionList";
 
 describe("OptionItem Component", () => {
   const options = [

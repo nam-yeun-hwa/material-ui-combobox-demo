@@ -1,19 +1,29 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  Children,
+  KeyboardEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { optionItem, selectOptionType } from "type/data";
 import "./select.css";
-import OptionItem from "./OptionItem";
+
 import useWindowSize from "../hook/useWindowSize.ts";
 import { SELECT_OPTION } from "../constant/constant";
 import Button from "./Button.tsx";
+import OptionList from "./OptionList.tsx";
 
 type SelectProps = {
+  children: ReactNode;
   isFocused: Boolean;
   isToggle: Boolean;
-  onSelect: (select: optionItem) => void;
+  // onSelect: (select: optionItem) => void;
   inputValue: string;
-  options: selectOptionType;
+  // options: selectOptionType;
   onChange: (value: string) => void;
-  onHover: (select: optionItem) => void;
+  // onHover: (select: optionItem) => void;
   onFocus: () => void;
   onBlur: () => void;
   onClick: () => void;
@@ -22,15 +32,16 @@ type SelectProps = {
 };
 
 export default function Select({
+  children,
   isFocused,
   isToggle,
-  onSelect,
+  // onSelect,
   inputValue,
-  options,
+  // options,
   onChange,
   onFocus,
   onBlur,
-  onHover,
+  // onHover,
   onToggle,
   onClear,
   onClick,
@@ -45,14 +56,6 @@ export default function Select({
     top: Number | undefined;
     bottom: Number | undefined;
   }>();
-
-  useEffect(() => {
-    console.log("isToggle", isToggle);
-  }, [isToggle]);
-
-  useEffect(() => {
-    console.log("options", options);
-  }, [options]);
 
   /**
    * @description select 엘레멘트 Y값 가져오기
@@ -180,7 +183,6 @@ export default function Select({
   // const onMouseOverHandler = (optionItem: optionItem) => {
   //   setOnEnterItem(optionItem);
   // };
-
   /**
    * @function onKeyboardHandler
    * @description 키보드 이벤트
@@ -233,7 +235,6 @@ export default function Select({
   //       break;
   //   }
   // };
-
   return (
     <>
       <div
@@ -308,13 +309,15 @@ export default function Select({
           }`}
         >
           <div className="base-popper-content" ref={optionRef}>
-            {isToggle && (
-              <OptionItem
-                options={options}
-                onSelect={onSelect}
-                onHover={onHover}
-              />
-            )}
+            {
+              isToggle && children
+              // <OptionList
+              //   onkeyboard={onkeyboard}
+              //   options={options}
+              //   onSelect={onSelect}
+              //   onHover={onHover}
+              // />
+            }
             {/* {<div>test</div>} */}
           </div>
         </div>

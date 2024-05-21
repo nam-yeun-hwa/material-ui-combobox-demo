@@ -6,9 +6,15 @@ type Props = {
   options: selectOptionType;
   onSelect: (option: optionItem) => void;
   onHover: (option: optionItem) => void;
+  onkeyboard: (keyCode: string) => void;
 };
 
-export default function OptionItem({ options, onSelect, onHover }: Props) {
+export default function OptionList({
+  options,
+  onSelect,
+  onHover,
+  onkeyboard,
+}: Props) {
   return (
     <>
       {options.map((item) => {
@@ -21,6 +27,7 @@ export default function OptionItem({ options, onSelect, onHover }: Props) {
               // (hoverItem?.value === item.value && "hover-option-item ") ||
               // (activeItem?.value === item.value && "active-option-item")
             }
+            onKeyDown={(e) => onkeyboard(e.key)}
             onClick={() => onSelect(item)}
             onMouseOver={() => onHover(item)}
             onMouseDown={(e) => {
