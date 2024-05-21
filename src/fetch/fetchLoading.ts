@@ -1,5 +1,5 @@
 import { selectOptionType } from "type/data";
-import jsonData from "../json/top100Films.json";
+import jsonData from "../json/optionList.json";
 
 /**
  * @function delay

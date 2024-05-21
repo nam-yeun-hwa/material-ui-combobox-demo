@@ -158,20 +158,29 @@ function App() {
         break;
       case "ArrowUp":
         console.log("위쪽 화살표 키가 눌렸습니다.");
-
         setFilteredIndex((prevState) => {
-          if (prevState) {
-            return (prevState - 1) % len;
+          console.log(prevState);
+          if (prevState !== undefined) {
+            if (prevState > 0) {
+              return (prevState - 1) % len;
+            }
+            return len - 1;
           }
+          return len - 1;
         });
 
         break;
       case "ArrowDown":
         console.log("아래쪽 화살표 키가 눌렸습니다.");
         setFilteredIndex((prevState) => {
-          if (prevState) {
-            return (prevState + 1) % len;
+          console.log(prevState);
+          if (prevState !== undefined) {
+            if (prevState + 1 < len) {
+              return (prevState + 1) % len;
+            }
+            return 0;
           }
+          return 0;
         });
 
         // setIsHoverIndex(filteredOptions);
