@@ -1,22 +1,24 @@
 import "./App.css";
 import "./components/select.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { fetchTop100Films } from "./fetch/fetchLoading";
+import { fetchOptionList } from "./fetch/fetchLoading";
 import Select from "./components/Select";
 import { optionItem, selectOptionType } from "type/data";
 import OptionList from "./components/OptionList";
 
 function App() {
   const [options, setOptions] = useState<selectOptionType>([]);
+  const [filteredOptions, setFilteredOptions] = useState<selectOptionType>([]);
   const [selectedValue, setSelectedValue] = useState<optionItem | undefined>();
   const [inputValue, setInputValue] = useState("");
+  const [filteredIndex, setFilteredIndex] = useState<number | undefined>();
+  const [isHoverItem, setIsHoverItem] = useState<optionItem | undefined>();
   const [isFocused, setIsFocused] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState<selectOptionType>([]);
   const [isToggle, setIsToggle] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      let data = await fetchTop100Films();
+      let data = await fetchOptionList();
       if (data) {
         setOptions(data);
       }
@@ -28,9 +30,17 @@ function App() {
     console.log("isToggle", isToggle);
   }, [isToggle]);
 
+  // useEffect(() => {
+  //   console.log("options", options);
+  // }, [isToggle]);
+
   useEffect(() => {
-    console.log("options", options);
-  }, [isToggle]);
+    console.log("filteredOptions", filteredOptions);
+  }, [filteredOptions]);
+
+  useEffect(() => {
+    console.log("selectedValue", selectedValue);
+  }, [selectedValue]);
 
   /**
    * @function onChange
@@ -53,10 +63,6 @@ function App() {
       setIsToggle(true);
     }
   };
-
-  useEffect(() => {
-    console.log(filteredOptions);
-  }, [filteredOptions]);
 
   /**
    * @function onFocus
@@ -121,59 +127,43 @@ function App() {
    * @function onMouseOverHandler
    * @param optionItem
    */
-  const onHover = (optionItem: optionItem) => {
-    // setOnEnterItem(optionItem);
+  const onHover = (optionItem: optionItem, filterIndex: number) => {
+    // hover된 객체를 구지 스테이트에 넣어서 관리하는 이유는
+    // hover된 객체와 키보드의 Enter, ArrowUp, ArrowDown이 연동되어 움직이기 때문이다
+    // 그래서 hover 됫을때마다 객체를 실시간으로 업데이트 해준다.
+    console.log("hover", filterIndex);
+    setIsHoverItem({ label: optionItem.label, value: optionItem.value });
+    setFilteredIndex(filterIndex);
   };
 
   /**
    * @function onKeyboardHandler
    * @description 키보드 이벤트
    */
-  const onkeyboard = (keyCode: string) => {
-    // switch (e.key) {
-    //   case "Enter":
-    //     console.log("Enter 키가 눌렸습니다.");
-    //     if (enterItem) {
-    //       onClickOptionItem(enterItem);
-    //     }
-    //     break;
-    //   case "ArrowUp":
-    //     console.log("위쪽 화살표 키가 눌렸습니다.");
-    //     if (isOptionToggle) {
-    //       setOnEnterItem((prevState) => {
-    //         if (prevState) {
-    //           const currentValue = Number(prevState?.value);
-    //           return options?.find(
-    //             (item) => item.value === String(currentValue - 1)
-    //           );
-    //         } else {
-    //           return options && options[99];
-    //         }
-    //       });
-    //     } else {
-    //       setIsOptionToggle(true);
-    //     }
-    //     break;
-    //   case "ArrowDown":
-    //     if (isOptionToggle) {
-    //       setOnEnterItem((prevState) => {
-    //         if (prevState) {
-    //           const currentValue = Number(prevState?.value);
-    //           return options?.find(
-    //             (item) => item.value === String(currentValue + 1)
-    //           );
-    //         } else {
-    //           return options && options[0];
-    //         }
-    //       });
-    //     } else {
-    //       setIsOptionToggle(true);
-    //     }
-    //     console.log("아래쪽 화살표 키가 눌렸습니다.");
-    //     break;
-    //   default:
-    //     break;
-    // }
+  const onKeyDown = (keyCode: string) => {
+    console.log("keyCode", keyCode);
+    switch (keyCode) {
+      case "Enter":
+        console.log("Enter 키가 눌렸습니다.");
+
+        break;
+      case "ArrowUp":
+        console.log("위쪽 화살표 키가 눌렸습니다.");
+        setFilteredIndex((prevState) => {
+          if (prevState) {
+            return prevState - 1;
+          }
+        });
+
+        break;
+      case "ArrowDown":
+        console.log("아래쪽 화살표 키가 눌렸습니다.");
+
+        // setIsHoverIndex(filteredOptions);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -192,13 +182,14 @@ function App() {
           onToggle={onToggle}
           onClear={onClear}
           onClick={onClick}
+          onKeyDown={onKeyDown}
         >
           <OptionList
-            onkeyboard={onkeyboard}
             // options={options}
             options={filteredOptions.length > 0 ? filteredOptions : options}
             onSelect={onSelect}
             onHover={onHover}
+            isHoverIndex={filteredIndex || -1}
           />
         </Select>
       </div>

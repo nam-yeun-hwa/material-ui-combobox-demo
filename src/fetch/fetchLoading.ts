@@ -18,7 +18,7 @@ const delay = (ms: number): Promise<selectOptionType> => {
 /**
  * @description 300ms 지연 후 `top100Films`을 리턴해야 합니다.
  */
-const fetchTop100Films = async (): Promise<selectOptionType | undefined> => {
+const fetchOptionList = async (): Promise<selectOptionType | undefined> => {
   try {
     const fetchData = await delay(300);
 
@@ -30,4 +30,4 @@ const fetchTop100Films = async (): Promise<selectOptionType | undefined> => {
   }
 };
 
-export { fetchTop100Films };
+export { fetchOptionList };

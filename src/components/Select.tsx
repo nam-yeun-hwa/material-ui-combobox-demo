@@ -29,6 +29,7 @@ type SelectProps = {
   onClick: () => void;
   onToggle: () => void;
   onClear: () => void;
+  onKeyDown: (keyCode: string) => void;
 };
 
 export default function Select({
@@ -45,6 +46,7 @@ export default function Select({
   onToggle,
   onClear,
   onClick,
+  onKeyDown,
 }: SelectProps) {
   const optionRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -244,7 +246,7 @@ export default function Select({
       >
         <div
           className={`MuiAutocomplete-root`}
-          // onKeyDown={onKeyboardHandler}
+          onKeyDown={(e) => onKeyDown(e.key)}
           tabIndex={0}
         >
           <div className="MuiFormControl-root">
