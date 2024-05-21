@@ -8,9 +8,6 @@ material-ui중 combobox를 데모 버전으로 만들어 보도록 한다.
 
 참고 링크 : https://mui.com/material-ui/react-autocomplete/#combo-box
 
-</br>
-</br>
-</br>
 
 # 기술 스택
 - react.js 18.2.0
@@ -48,6 +45,10 @@ material-ui중 combobox를 데모 버전으로 만들어 보도록 한다.
 
 # Troubleshooting
 (추가 예정....)
+
+</br>
+</br>
+</br>
 
 # React + TypeScript + Vite
 
