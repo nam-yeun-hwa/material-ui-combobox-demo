@@ -42,6 +42,14 @@ function App() {
     console.log("selectedValue", selectedValue);
   }, [selectedValue]);
 
+  useEffect(() => {
+    console.log("filteredIndex", filteredIndex);
+  }, [filteredIndex]);
+
+  useEffect(() => {
+    console.log("hover Item", isHoverItem);
+  }, [isHoverItem]);
+
   /**
    * @function onChange
    * @description select option 검색
@@ -141,6 +149,7 @@ function App() {
    * @description 키보드 이벤트
    */
   const onKeyDown = (keyCode: string) => {
+    const len = filteredOptions.length || options.length;
     console.log("keyCode", keyCode);
     switch (keyCode) {
       case "Enter":
@@ -149,15 +158,21 @@ function App() {
         break;
       case "ArrowUp":
         console.log("위쪽 화살표 키가 눌렸습니다.");
+
         setFilteredIndex((prevState) => {
           if (prevState) {
-            return prevState - 1;
+            return (prevState - 1) % len;
           }
         });
 
         break;
       case "ArrowDown":
         console.log("아래쪽 화살표 키가 눌렸습니다.");
+        setFilteredIndex((prevState) => {
+          if (prevState) {
+            return (prevState + 1) % len;
+          }
+        });
 
         // setIsHoverIndex(filteredOptions);
         break;
@@ -189,7 +204,7 @@ function App() {
             options={filteredOptions.length > 0 ? filteredOptions : options}
             onSelect={onSelect}
             onHover={onHover}
-            isHoverIndex={filteredIndex || -1}
+            isHoverIndex={filteredIndex ?? -1}
           />
         </Select>
       </div>
