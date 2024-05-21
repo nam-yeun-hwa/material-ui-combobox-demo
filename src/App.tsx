@@ -136,6 +136,7 @@ function App() {
    * @param optionItem
    */
   const onHover = (optionItem: optionItem, filterIndex: number) => {
+    // 메모
     // hover된 객체를 구지 스테이트에 넣어서 관리하는 이유는
     // hover된 객체와 키보드의 Enter, ArrowUp, ArrowDown이 연동되어 움직이기 때문이다
     // 그래서 hover 됫을때마다 객체를 실시간으로 업데이트 해준다.
@@ -182,8 +183,6 @@ function App() {
           }
           return 0;
         });
-
-        // setIsHoverIndex(filteredOptions);
         break;
       default:
         break;
