@@ -13,7 +13,7 @@ function App() {
   const [hoveredValue, setHoveredValue] = useState<optionItem | undefined>();
   const [inputValue, setInputValue] = useState("");
   const [filteredIndex, setFilteredIndex] = useState<number | undefined>();
-  const [isHoverItem, setIsHoverItem] = useState<optionItem | undefined>();
+  // const [isHoverItem, setIsHoverItem] = useState<optionItem | undefined>();
   const [isFocused, setIsFocused] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
 
@@ -27,29 +27,29 @@ function App() {
     fetchData();
   }, [options]);
 
-  useEffect(() => {
-    console.log("isToggle", isToggle);
-  }, [isToggle]);
+  // useEffect(() => {
+  //   console.log("isToggle", isToggle);
+  // }, [isToggle]);
 
   // useEffect(() => {
   //   console.log("options", options);
   // }, [isToggle]);
 
-  useEffect(() => {
-    console.log("filteredOptions", filteredOptions);
-  }, [filteredOptions]);
+  // useEffect(() => {
+  //   console.log("filteredOptions", filteredOptions);
+  // }, [filteredOptions]);
+
+  // useEffect(() => {
+  //   console.log("selectedValue", selectedValue);
+  // }, [selectedValue]);
+
+  // useEffect(() => {
+  //   console.log("filteredIndex", filteredIndex);
+  // }, [filteredIndex]);
 
   useEffect(() => {
-    console.log("selectedValue", selectedValue);
+    console.log("★★★selectedValue★★★", selectedValue);
   }, [selectedValue]);
-
-  useEffect(() => {
-    console.log("filteredIndex", filteredIndex);
-  }, [filteredIndex]);
-
-  useEffect(() => {
-    console.log("hover Item", isHoverItem);
-  }, [isHoverItem]);
 
   /**
    * @function onChange
@@ -146,7 +146,7 @@ function App() {
     // hover된 객체와 키보드의 Enter, ArrowUp, ArrowDown이 연동되어 움직이기 때문이다
     // 그래서 hover 됫을때마다 객체를 실시간으로 업데이트 해준다.
     console.log("hover", filterIndex);
-    setIsHoverItem({ label: optionItem.label, value: optionItem.value });
+    setHoveredValue({ label: optionItem.label, value: optionItem.value });
     setFilteredIndex(filterIndex);
   };
 
@@ -159,14 +159,26 @@ function App() {
     console.log("keyCode", keyCode);
     switch (keyCode) {
       case "Enter":
-        console.log("Enter 키가 눌렸습니다.", isHoverItem);
-        // if (isHoverItem) {
-        //   setSelectedValue({
-        //     label: isHoverItem.label,
-        //     value: isHoverItem.value,
-        //   });
-        //   setInputValue(isHoverItem.label);
-        // }
+        console.log("Enter 키가 눌렸습니다.", "filteredIndex");
+        if (filteredIndex !== undefined) {
+          const label =
+            filteredOptions.length > 0
+              ? filteredOptions[filteredIndex].label
+              : options[filteredIndex].label;
+          const value =
+            filteredOptions.length > 0
+              ? filteredOptions[filteredIndex].value
+              : options[filteredIndex].value;
+
+          console.log("label", label);
+          console.log("value", value);
+
+          setSelectedValue({
+            label: label,
+            value: value,
+          });
+          setInputValue(label);
+        }
 
         break;
       case "ArrowUp":
@@ -181,8 +193,6 @@ function App() {
           }
           return len - 1;
         });
-
-        // setHoveredValue(filteredOptions)
 
         break;
       case "ArrowDown":

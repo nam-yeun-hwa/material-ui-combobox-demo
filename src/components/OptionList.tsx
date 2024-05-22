@@ -1,6 +1,5 @@
 import { optionItem, selectOptionType } from "type/data";
 import "./optionItem.css";
-import { useEffect } from "react";
 
 type Props = {
   options: selectOptionType;
@@ -15,9 +14,6 @@ export default function OptionList({
   isHoverIndex,
   onHover,
 }: Props) {
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
   return (
     <>
       {options.map((item, index) => {
