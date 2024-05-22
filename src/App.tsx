@@ -98,6 +98,7 @@ function App() {
   const onClick = () => {
     setIsFocused(true);
     setIsToggle(true);
+    setHoveredValue(undefined);
   };
 
   /**
@@ -131,8 +132,8 @@ function App() {
     setIsToggle(true);
     setIsFocused(true);
     setFilteredOptions([]);
-
-    //   setOnEnterItem(undefined);
+    // setHoveredValue(undefined);
+    setFilteredIndex(undefined);
     setSelectedValue(undefined);
   };
 
@@ -160,6 +161,7 @@ function App() {
 
     if (!isToggle) {
       setIsToggle(true);
+      return;
     }
 
     switch (keyCode) {
