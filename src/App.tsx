@@ -161,28 +161,37 @@ function App() {
       case "Enter":
         console.log("Enter 키가 눌렸습니다.", "filteredIndex");
         if (filteredIndex !== undefined) {
-          const label =
-            filteredOptions.length > 0
-              ? filteredOptions[filteredIndex].label
-              : options[filteredIndex].label;
-          const value =
-            filteredOptions.length > 0
-              ? filteredOptions[filteredIndex].value
-              : options[filteredIndex].value;
+          const selectItem = options.find(
+            (item, index) => index === filteredIndex
+          );
 
-          console.log("label", label);
-          console.log("value", value);
+          if (selectItem) {
+            setSelectedValue(selectItem);
+            setInputValue(selectItem.label);
+          }
 
-          setSelectedValue({
-            label: label,
-            value: value,
-          });
-          setInputValue(label);
+          //   const hasFilteredOptions = filteredOptions.length > 0;
+          //   const label = hasFilteredOptions
+          //     ? filteredOptions[filteredIndex].label
+          //     : options[filteredIndex].label;
+          //   const value = hasFilteredOptions
+          //     ? filteredOptions[filteredIndex].value
+          //     : options[filteredIndex].value;
+
+          //   console.log("label", label);
+          //   console.log("value", value);
+
+          //   setSelectedValue({
+          //     label: label,
+          //     value: value,
+          //   });
+          //   setInputValue(label);
         }
 
         break;
       case "ArrowUp":
         console.log("위쪽 화살표 키가 눌렸습니다.");
+
         setFilteredIndex((prevState) => {
           console.log(prevState);
           if (prevState !== undefined) {
