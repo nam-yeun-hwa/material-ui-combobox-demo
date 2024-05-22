@@ -6,7 +6,7 @@ material-ui중 combobox를 데모 버전으로 만들어 보도록 한다.
 3. TDD를 적용
 4. 점진적인 리팩토링
 
-참고 링크 : https://mui.com/material-ui/react-autocomplete/#combo-box
+컨셉 링크 : https://mui.com/material-ui/react-autocomplete/#combo-box
 
 
 # 기술 스택
