@@ -10,6 +10,7 @@ function App() {
   const [options, setOptions] = useState<selectOptionType>([]);
   const [filteredOptions, setFilteredOptions] = useState<selectOptionType>([]);
   const [selectedValue, setSelectedValue] = useState<optionItem | undefined>();
+  const [hoveredValue, setHoveredValue] = useState<optionItem | undefined>();
   const [inputValue, setInputValue] = useState("");
   const [filteredIndex, setFilteredIndex] = useState<number | undefined>();
   const [isHoverItem, setIsHoverItem] = useState<optionItem | undefined>();
@@ -121,6 +122,10 @@ function App() {
     setIsToggle(!isToggle);
   };
 
+  /**
+   * @function onClear
+   * @description 선택 옵션 삭제
+   */
   const onClear = () => {
     setInputValue("");
     setIsToggle(true);
@@ -154,7 +159,14 @@ function App() {
     console.log("keyCode", keyCode);
     switch (keyCode) {
       case "Enter":
-        console.log("Enter 키가 눌렸습니다.");
+        console.log("Enter 키가 눌렸습니다.", isHoverItem);
+        // if (isHoverItem) {
+        //   setSelectedValue({
+        //     label: isHoverItem.label,
+        //     value: isHoverItem.value,
+        //   });
+        //   setInputValue(isHoverItem.label);
+        // }
 
         break;
       case "ArrowUp":
@@ -170,6 +182,8 @@ function App() {
           return len - 1;
         });
 
+        // setHoveredValue(filteredOptions)
+
         break;
       case "ArrowDown":
         console.log("아래쪽 화살표 키가 눌렸습니다.");
@@ -183,6 +197,7 @@ function App() {
           }
           return 0;
         });
+
         break;
       default:
         break;

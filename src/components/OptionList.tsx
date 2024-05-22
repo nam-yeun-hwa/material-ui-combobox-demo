@@ -15,6 +15,9 @@ export default function OptionList({
   isHoverIndex,
   onHover,
 }: Props) {
+  useEffect(() => {
+    console.log(options);
+  }, [options]);
   return (
     <>
       {options.map((item, index) => {
@@ -24,10 +27,7 @@ export default function OptionList({
             key={item.value}
             className={
               `option-item 
-              ${
-                (isHoverIndex + 1).toString() === item.value &&
-                "hover-option-item"
-              }`
+              ${isHoverIndex === index && "hover-option-item"}`
               // (activeItem?.value === item.value && "active-option-item")
             }
             onClick={() => onSelect(item)}
