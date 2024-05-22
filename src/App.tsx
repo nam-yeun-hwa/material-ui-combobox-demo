@@ -157,6 +157,11 @@ function App() {
   const onKeyDown = (keyCode: string) => {
     const len = filteredOptions.length || options.length;
     console.log("keyCode", keyCode);
+
+    if (!isToggle) {
+      setIsToggle(true);
+    }
+
     switch (keyCode) {
       case "Enter":
         console.log("Enter 키가 눌렸습니다.", "filteredIndex");
@@ -169,6 +174,8 @@ function App() {
             setSelectedValue(selectItem);
             setInputValue(selectItem.label);
           }
+
+          onToggle();
 
           //   const hasFilteredOptions = filteredOptions.length > 0;
           //   const label = hasFilteredOptions
