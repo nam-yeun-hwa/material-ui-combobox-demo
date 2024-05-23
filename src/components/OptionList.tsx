@@ -3,16 +3,18 @@ import "./optionItem.css";
 
 type Props = {
   options: selectOptionType;
-  onSelect: (option: optionItem) => void;
   isHoverIndex: number;
+  isActiveIndex: string;
+  onSelect: (option: optionItem) => void;
   onHover: (option: optionItem, optionIndex: number) => void;
 };
 
 export default function OptionList({
   options,
   onSelect,
-  isHoverIndex,
   onHover,
+  isHoverIndex,
+  isActiveIndex,
 }: Props) {
   return (
     <>
@@ -21,11 +23,16 @@ export default function OptionList({
           <div
             data-testid="option-list"
             key={item.value}
-            className={
-              `option-item 
-              ${isHoverIndex === index && "hover-option-item"}`
-              // (activeItem?.value === item.value && "active-option-item")
-            }
+            className={`option-item 
+              ${
+                isActiveIndex === item.value && isHoverIndex === index
+                  ? "active-hover-item"
+                  : (isActiveIndex === item.value && "active-option-item") ||
+                    (isHoverIndex === index && "hover-option-item")
+
+                // (isHoverIndex === index && "hover-option-item") ||
+                // (isActiveIndex === item.value && "active-option-item")
+              }`}
             onClick={() => onSelect(item)}
             onMouseOver={() => onHover(item, index)}
             onMouseDown={(e) => {

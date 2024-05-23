@@ -12,10 +12,14 @@
   background-color: #f5f5f5;
 } */
 
+.hover-option-item {
+  background-color: #f5f5f5;
+}
+
 .active-option-item {
   background-color: #eff4fb !important;
 }
 
-.hover-option-item {
-  background-color: #f5f5f5;
+.active-hover-item {
+  background-color: #e7eef9 !important;
 }

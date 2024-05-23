@@ -169,7 +169,7 @@ function App() {
         console.log("Enter 키가 눌렸습니다.", "filteredIndex");
         if (filteredIndex !== undefined) {
           const selectItem = options.find(
-            (item, index) => index === filteredIndex
+            (_, index) => index === filteredIndex
           );
 
           if (selectItem) {
@@ -239,9 +239,6 @@ function App() {
           isFocused={isFocused}
           isToggle={isToggle}
           inputValue={inputValue || ""}
-          // options={filteredOptions.length > 0 ? filteredOptions : options}
-          // onSelect={onSelect}
-          // onHover={onHover}
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}
@@ -251,11 +248,11 @@ function App() {
           onKeyDown={onKeyDown}
         >
           <OptionList
-            // options={options}
             options={filteredOptions.length > 0 ? filteredOptions : options}
             onSelect={onSelect}
             onHover={onHover}
             isHoverIndex={filteredIndex ?? -1}
+            isActiveIndex={selectedValue ? selectedValue.value : ""}
           />
         </Select>
       </div>
