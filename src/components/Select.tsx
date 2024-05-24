@@ -1,6 +1,7 @@
 import { ReactNode, useRef, useState } from "react";
 import "./select.css";
 import Button from "./Button.tsx";
+import useScrollPosition from "hook/useScrollPosition.ts";
 
 type SelectProps = {
   children: ReactNode;
@@ -29,11 +30,13 @@ export default function Select({
   onClick,
   onKeyDown,
 }: SelectProps) {
-  const optionRef = useRef<HTMLDivElement>(null);
+  // const containerRef = useRef<HTMLDivElement>(null);
+  // const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLDivElement>(null);
 
   // const windowSize = useWindowSize();
+  const [containerRef, scrollTop, scrollTo] = useScrollPosition();
 
   const [availableSpace, setAvailableSpace] = useState<{
     top: Number | undefined;
@@ -131,7 +134,7 @@ export default function Select({
             "base-popper-root_bottom"
           }`}
         >
-          <div className="base-popper-content" ref={optionRef}>
+          <div className="base-popper-content" ref={containerRef}>
             {isToggle && children}
           </div>
         </div>
