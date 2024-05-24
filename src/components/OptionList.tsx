@@ -29,9 +29,6 @@ export default function OptionList({
                   ? "active-hover-item"
                   : (isActiveIndex === item.value && "active-option-item") ||
                     (isHoverIndex === index && "hover-option-item")
-
-                // (isHoverIndex === index && "hover-option-item") ||
-                // (isActiveIndex === item.value && "active-option-item")
               }`}
             onClick={() => onSelect(item)}
             onMouseOver={() => onHover(item, index)}
