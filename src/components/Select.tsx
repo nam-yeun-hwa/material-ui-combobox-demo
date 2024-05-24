@@ -1,7 +1,6 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import "./select.css";
 import Button from "./Button.tsx";
-import useScrollPosition from "hook/useScrollPosition.ts";
 
 type SelectProps = {
   children: ReactNode;
@@ -15,6 +14,7 @@ type SelectProps = {
   onToggle: () => void;
   onClear: () => void;
   onKeyDown: (keyCode: string) => void;
+  containerRef: React.RefObject<HTMLDivElement>;
 };
 
 export default function Select({
@@ -29,14 +29,12 @@ export default function Select({
   onClear,
   onClick,
   onKeyDown,
+  containerRef,
 }: SelectProps) {
-  // const containerRef = useRef<HTMLDivElement>(null);
-  // const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLDivElement>(null);
 
   // const windowSize = useWindowSize();
-  const [containerRef, scrollTop, scrollTo] = useScrollPosition();
 
   const [availableSpace, setAvailableSpace] = useState<{
     top: Number | undefined;
@@ -126,6 +124,7 @@ export default function Select({
           </div>
         </div>
         <div
+          ref={containerRef}
           data-testid="optionToggle"
           className={`base-popper-root ${isFocused && "open"} ${
             availableSpace?.top &&
@@ -134,9 +133,7 @@ export default function Select({
             "base-popper-root_bottom"
           }`}
         >
-          <div className="base-popper-content" ref={containerRef}>
-            {isToggle && children}
-          </div>
+          <div className="base-popper-content">{isToggle && children}</div>
         </div>
       </div>
     </>

@@ -1,10 +1,11 @@
 import "./App.css";
 import "./components/select.css";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchOptionList } from "./fetch/fetchLoading";
 import Select from "./components/Select";
 import { optionItem, selectOptionType } from "type/data";
 import OptionList from "./components/OptionList";
+import useScrollPosition from "./hook/useScrollPosition";
 
 function App() {
   const [options, setOptions] = useState<selectOptionType>([]);
@@ -13,9 +14,13 @@ function App() {
   const [hoveredValue, setHoveredValue] = useState<optionItem | undefined>();
   const [inputValue, setInputValue] = useState("");
   const [filteredIndex, setFilteredIndex] = useState<number | undefined>();
-  // const [isHoverItem, setIsHoverItem] = useState<optionItem | undefined>();
   const [isFocused, setIsFocused] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
+  const [scrollRelativeTop, setScrollRelativeTop] = useState(0);
+
+  const [containerRef, scrollTop, scrollTo] = useScrollPosition();
+
+  const optionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,9 +52,15 @@ function App() {
   //   console.log("filteredIndex", filteredIndex);
   // }, [filteredIndex]);
 
+  // useEffect(() => {
+  //   console.log("★★★selectedValue★★★", selectedValue);
+  // }, [selectedValue]);
+
   useEffect(() => {
-    console.log("★★★selectedValue★★★", selectedValue);
-  }, [selectedValue]);
+    if (isToggle) {
+      scrollTo(scrollRelativeTop);
+    }
+  }, [isToggle]);
 
   /**
    * @function onChange
@@ -106,11 +117,17 @@ function App() {
    * @param optionValue 클릭한 option item
    * @description 클릭한 옵션
    */
-  const onSelect = (optionItem: optionItem) => {
+  const onSelect = (optionItem: optionItem, top: number) => {
     setIsToggle(false);
     if (optionItem) {
       setInputValue(optionItem.label);
       setSelectedValue(optionItem);
+    }
+
+    if (containerRef.current && filteredIndex !== undefined) {
+      const optionRect = optionRefs.current[filteredIndex]!.offsetTop;
+      console.log("optionRect", optionRect);
+      setScrollRelativeTop(optionRect);
     }
   };
 
@@ -119,7 +136,6 @@ function App() {
    * @description option toggle
    */
   const onToggle = () => {
-    // setIsFocused(!isFocused);
     setIsToggle(!isToggle);
   };
 
@@ -132,7 +148,6 @@ function App() {
     setIsToggle(true);
     setIsFocused(true);
     setFilteredOptions([]);
-    // setHoveredValue(undefined);
     setFilteredIndex(undefined);
     setSelectedValue(undefined);
   };
@@ -146,7 +161,7 @@ function App() {
     // hover된 객체를 구지 스테이트에 넣어서 관리하는 이유는
     // hover된 객체와 키보드의 Enter, ArrowUp, ArrowDown이 연동되어 움직이기 때문이다
     // 그래서 hover 됫을때마다 객체를 실시간으로 업데이트 해준다.
-    console.log("hover", filterIndex);
+    // console.log("hover", filterIndex);
     setHoveredValue({ label: optionItem.label, value: optionItem.value });
     setFilteredIndex(filterIndex);
   };
@@ -178,23 +193,6 @@ function App() {
           }
 
           onToggle();
-
-          //   const hasFilteredOptions = filteredOptions.length > 0;
-          //   const label = hasFilteredOptions
-          //     ? filteredOptions[filteredIndex].label
-          //     : options[filteredIndex].label;
-          //   const value = hasFilteredOptions
-          //     ? filteredOptions[filteredIndex].value
-          //     : options[filteredIndex].value;
-
-          //   console.log("label", label);
-          //   console.log("value", value);
-
-          //   setSelectedValue({
-          //     label: label,
-          //     value: value,
-          //   });
-          //   setInputValue(label);
         }
 
         break;
@@ -246,8 +244,10 @@ function App() {
           onClear={onClear}
           onClick={onClick}
           onKeyDown={onKeyDown}
+          containerRef={containerRef}
         >
           <OptionList
+            optionRefs={optionRefs}
             options={filteredOptions.length > 0 ? filteredOptions : options}
             onSelect={onSelect}
             onHover={onHover}
