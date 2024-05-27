@@ -22,6 +22,9 @@ function App() {
 
   const optionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  /**
+   * @description option 데이터 가져오기
+   */
   useEffect(() => {
     const fetchData = async () => {
       let data = await fetchOptionList();
@@ -56,6 +59,9 @@ function App() {
   //   console.log("★★★selectedValue★★★", selectedValue);
   // }, [selectedValue]);
 
+  /**
+   * @description isToggle가 true일때 옵션스크롤 Y값 상단 고정의 값으로
+   */
   useEffect(() => {
     if (isToggle) {
       scrollTo(scrollRelativeTop);
@@ -244,28 +250,40 @@ function App() {
   return (
     <div className="container">
       <div className="contents">
-        <Select
-          isFocused={isFocused}
-          isToggle={isToggle}
-          inputValue={inputValue || ""}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onToggle={onToggle}
-          onClear={onClear}
-          onClick={onClick}
-          onKeyDown={onKeyDown}
-          containerRef={containerRef}
+        <div
+          style={{
+            boxSizing: "border-box",
+            display: "flex",
+            justifyContent: "center",
+            borderRadius: "12px",
+            border: "1px solid hsl(215, 15%, 92%)",
+            margin: "0",
+            padding: "24px",
+          }}
         >
-          <OptionList
-            optionRefs={optionRefs}
-            options={filteredOptions.length > 0 ? filteredOptions : options}
-            onSelect={onSelect}
-            onHover={onHover}
-            isHoverIndex={filteredIndex ?? -1}
-            isActiveIndex={selectedValue ? selectedValue.value : ""}
-          />
-        </Select>
+          <Select
+            isFocused={isFocused}
+            isToggle={isToggle}
+            inputValue={inputValue || ""}
+            onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            onToggle={onToggle}
+            onClear={onClear}
+            onClick={onClick}
+            onKeyDown={onKeyDown}
+            containerRef={containerRef}
+          >
+            <OptionList
+              optionRefs={optionRefs}
+              options={filteredOptions.length > 0 ? filteredOptions : options}
+              onSelect={onSelect}
+              onHover={onHover}
+              isHoverIndex={filteredIndex ?? -1}
+              isActiveIndex={selectedValue ? selectedValue.value : ""}
+            />
+          </Select>
+        </div>
       </div>
     </div>
   );
