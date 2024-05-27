@@ -113,6 +113,18 @@ function App() {
   };
 
   /**
+   * @function scrollPostionY
+   * @description option item 좌표를 찾아 optionItem이 화면에 보일때 포지션Y 설정
+   */
+  const scrollPostionY = () => {
+    if (containerRef.current && filteredIndex !== undefined) {
+      const optionRect = optionRefs.current[filteredIndex]!.offsetTop;
+      console.log("optionRect", optionRect);
+      setScrollRelativeTop(optionRect);
+    }
+  };
+
+  /**
    * @function onSelect
    * @param optionValue 클릭한 option item
    * @description 클릭한 옵션
@@ -123,12 +135,7 @@ function App() {
       setInputValue(optionItem.label);
       setSelectedValue(optionItem);
     }
-
-    if (containerRef.current && filteredIndex !== undefined) {
-      const optionRect = optionRefs.current[filteredIndex]!.offsetTop;
-      console.log("optionRect", optionRect);
-      setScrollRelativeTop(optionRect);
-    }
+    scrollPostionY();
   };
 
   /**
@@ -193,6 +200,7 @@ function App() {
           }
 
           onToggle();
+          scrollPostionY();
         }
 
         break;
@@ -210,6 +218,8 @@ function App() {
           return len - 1;
         });
 
+        scrollPostionY();
+
         break;
       case "ArrowDown":
         console.log("아래쪽 화살표 키가 눌렸습니다.");
@@ -223,6 +233,7 @@ function App() {
           }
           return 0;
         });
+        scrollPostionY();
 
         break;
       default:

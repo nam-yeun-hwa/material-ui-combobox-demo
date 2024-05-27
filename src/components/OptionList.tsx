@@ -1,6 +1,5 @@
 import { optionItem, selectOptionType } from "type/data";
 import "./optionItem.css";
-import { useEffect, useRef } from "react";
 
 type Props = {
   options: selectOptionType;
@@ -19,14 +18,11 @@ export default function OptionList({
   isActiveIndex,
   optionRefs,
 }: Props) {
-  // const itemRef = useRef<HTMLDivElement>(null);
-
   return (
     <>
       {options.map((item, index) => {
         return (
           <div
-            // ref={itemRef}
             ref={(el) => optionRefs.current && (optionRefs.current[index] = el)}
             data-testid="option-list"
             key={item.value}
