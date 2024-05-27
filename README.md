@@ -10,9 +10,10 @@ material-ui중 combobox를 데모 버전으로 만들어 보도록 한다.
 
 
 # DEMO version 0.0.1
+
+
 <img src="https://nyhya.cafe24.com/git_img/combo-component-Demo.gif" width="400" height="auto"/>
-
-
+    
 - Select바를 클릭하여 input 입력을 통해 option 값을 검색할 수 있습니다.
 - option 을 선택하지 않고, focus 가 Select를 벗어난 경우에는, 검색어가 삭제됩니다.
 - Select를 클릭하거나 Select바에 포커스가 있는 경우에 Select에서 위 방향 또는 아래 방향 키보드를 누르면 선택 가능한 option들이 나타납니다.
