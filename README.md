@@ -49,7 +49,105 @@ material-ui중 combobox를 데모 버전으로 만들어 보도록 한다.
 
 
 # Troubleshooting
-(추가 예정....)
+
+
+## 이슈 1
+
+처음 테스트 라이브러리를 리액트에서 세팅 하는 과정에서 이슈가 발생했다. </br>
+TEST 라이브러리에서 import 구문을 읽지 못하여 TEST가 진행되지 못하고 에러를 일으킨것 같다..</br>
+
+```js
+ ● Test suite failed to run
+
+    Jest encountered an unexpected token
+
+    Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.
+
+    Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.
+
+    By default "node_modules" folder is ignored by transformers.
+                           ^^^^^^
+
+    SyntaxError: Cannot use import statement outside a module
+
+      4 | import {useEffect} from "react";
+      5 |
+    > 6 | import axios from "axios";
+        | ^
+      7 |
+      8 | function App() {
+      9 |
+```
+
+### 에러가 일어난 원인 추측
+- Jest는 Node.js 환경에서 동작하기 때문에 CommonJS 방식으로 모듈을 사용합니다.
+- Jest는 바벨 같은 트랜스파일러를 통해 ECMAScript 모듈을 CommponJS 문법에 맞도록 변경 후 사용해야 합니다.
+(Jest는 node_modules 폴더는 기본적으로 변경 대상에서 제외합니다.)
+
+### 시도한 내용
+우선 node를 type 적용으로 재설치를 하거나 바벨을 설치해 보았으나 문제가 해결되지 않고 다른 에러가 발생 하였다. </br>
+마지막으로 동작을 했었던 키워드는jest.config.js에서 `testEnvironment: "node"`를 `testEnvironment: "jsdom"` 으로 변경 한후에 에러가 사라졌다.
+
+📄 jest.config.js
+
+```js
+import type { Config } from "@jest/types";
+
+const config: Config.InitialOptions = {
+  preset: "ts-jest", // TypeScript 파일을 테스트하기 위해 ts-jest 프리셋 사용
+  testEnvironment: "jsdom", // 테스트 환경을 jsdom으로 설정 (브라우저 환경 모방)
+  // testEnvironment: "node", // 주석 처리된 옵션: 테스트 환경을 Node.js로 설정 (서버 환경 모방)
+  verbose: true, // 테스트 실행 결과를 상세히 출력
+  // collectCoverage: true, // 주석 처리된 옵션: 테스트 커버리지 수집
+
+  // 특정 경로의 테스트 파일을 제외
+  testPathIgnorePatterns: ["<rootDir>/cypress/"], // cypress 디렉토리의 테스트 파일 무시
+  transformIgnorePatterns: ["<rootDir>/node_modules/"], // node_modules 디렉토리의 파일을 변환하지 않음
+
+  // 절대 경로 설정
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/$1", // @/ 경로를 프로젝트 루트로 매핑
+    "^utils/(.*)": "<rootDir>/src/utils/$1", // utils/ 경로를 src/utils로 매핑
+    "\\.(css|less)$": "<rootDir>/tests/styleMock.ts", // CSS, Less 파일을 스타일 목(mock) 파일로 매핑
+  },
+  setupFilesAfterEnv: ["./setupTests.ts"], // 테스트 환경 설정 파일 지정
+};
+
+export default config;
+```
+
+
+
+## 이슈 2
+
+테스트 라이브 러리에서 CSS를 인식하지 못하는 문제가 발생 하였다.
+
+루트에 tests라는 폴더를 만든 후 `styleMock.ts`를 만들어 export default {}; 내용을 넣어주었고
+아래의 jest.config.js의 `moduleNameMapper`에서  ` "\\.(css|less)$": "<rootDir>/tests/styleMock.ts" `의 내용을 추가 해주었다.
+
+📄 jest.config.js
+
+```js
+moduleNameMapper: {
+    "\\.(css|less)$": "<rootDir>/tests/styleMock.ts", // CSS, Less 파일을 스타일 목(mock) 파일로 매핑
+  },
+```
+
+## 그외
+
+루트에 setupTests.ts 파일을 생성하여 아래 내용을 추가 해주었다.
+
+📄 setupTests.ts
+```js
+import "@testing-library/jest-dom";
+```
+
+`setupTests.ts`를 `jest.config.js`에서 잡아주었다.
+
+📄 jest.config.js
+```js
+ setupFilesAfterEnv: ["./setupTests.ts"],
+```
 
 </br>
 </br>
