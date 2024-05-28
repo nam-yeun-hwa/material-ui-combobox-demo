@@ -157,6 +157,11 @@ const optionRect = optionRefs.current[idx]!.offsetTop;
 ```
 offsetTop 속성은 HTML 요소의 상대적인 위치를 반환하며, 요소의 Top이 부모 컨테이너의 상단에서 얼마나 떨어져 있는지를 나타낸다. 이 속성은 요소의 현재 레이아웃 위치를 가져오는 데 유용하다. (offsetTop은 읽기 전용 속성이다.)
 
+위 코드에서 느낌표(!)는 TypeScript에서 사용하는 non-null assertion operator으로 이 연산자는 개발자가 해당 값이 null이나 undefined가 아님을 컴파일러에게 보증할 때 사용한다. 
+즉, !를 사용 하면 TypeScript는 해당 값이 null이나 undefined가 아닌 것으로 간주하고, 그에 따른 타입 체크를 수행하지 않는다.
+
+위 코드에서 optionRefs.current[filteredIndex]는 타입스크립트 컴파일러에게 optionRefs.current 배열의 filteredIndex 위치에 있는 요소가 null이나 undefined가 아님을 보증하는 것이다. 따라서 그 다음에 .offsetTop을 안전하게 접근할 수 있다.
+
 ## 그외 ref 참고코드 [기록용]
 
 ```ref
