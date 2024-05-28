@@ -133,7 +133,7 @@ moduleNameMapper: {
   },
 ```
 
-## 그외
+## 그외 참고 
 
 루트에 setupTests.ts 파일을 생성하여 아래 내용을 추가 해주었다.
 
@@ -148,6 +148,66 @@ import "@testing-library/jest-dom";
 ```js
  setupFilesAfterEnv: ["./setupTests.ts"],
 ```
+
+## 그외 ref [기록용]
+
+리액트에서 ref 객체를 사용하면 DOM 요소에 접근할 수 있고 current 속성을 통해 해당 DOM 요소를 참조할 수 있다. 옵션 아이템을 클릭했다가 다시 옵션을 화면에 보여 줘야 할때 스크롤의 조정이 필요해서 ref를 사용하여 스크롤의 위치를 조정해 주었다.
+```ref
+const optionRect = optionRefs.current[idx]!.offsetTop;
+```
+offsetTop 속성은 HTML 요소의 상대적인 위치를 반환하며, 요소의 Top이 부모 컨테이너의 상단에서 얼마나 떨어져 있는지를 나타낸다. 이 속성은 요소의 현재 레이아웃 위치를 가져오는 데 유용하다. (offsetTop은 읽기 전용 속성이다.)
+
+## 그외 ref 참고코드 [기록용]
+
+```ref
+import { createRef, useEffect, useState } = from "react";
+import "./styles.css";
+
+const buttonWidth = 56;
+const tabWidth = 300;
+const tabs =
+            [
+              {
+                title:"Home",
+                icon:"home",
+                content:"Some information inside ..."
+              },
+            //more tabs
+            ]
+
+
+const WidgetTab = ({tabRef, title, content}) => {
+    return (
+        <div ref={tabRef}>
+            <h2>{title}</h2>
+            <p>{content}</p>
+        </div>
+    );
+};
+
+export const Widget = () => {
+    const [refs, setRefs] = useState([]);
+
+    useEffect(()=>{
+        setRefs(tabs.map(()=> createRef()));
+    },[]);
+
+    return (
+        <>
+            {tabs.map.((tab, index) => {
+                    <WidgetTab
+                        key={tab.title}
+                        tabRef={refs[index]}
+                        title={tab.title}
+                        content={tab.content}
+                    />
+                }
+            )}
+        </>
+    )
+}
+```
+
 
 </br>
 </br>
