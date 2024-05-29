@@ -1,6 +1,6 @@
 import "./App.css";
 import "./components/select.css";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchOptionList } from "./fetch/fetchLoading";
 import Select from "./components/Select";
 import { optionItem, selectOptionType } from "type/data";
@@ -50,10 +50,6 @@ function App() {
   // useEffect(() => {
   //   console.log("selectedValue", selectedValue);
   // }, [selectedValue]);
-
-  // useEffect(() => {
-  //   console.log("filteredIndex", filteredIndex);
-  // }, [filteredIndex]);
 
   // useEffect(() => {
   //   console.log("★★★selectedValue★★★", selectedValue);
@@ -123,10 +119,43 @@ function App() {
    * @description option item 좌표를 찾아 optionItem이 화면에 보일때 포지션Y 설정
    */
   const scrollPostionY = () => {
-    if (containerRef.current && filteredIndex !== undefined) {
+    // if (containerRef.current && filteredIndex !== undefined) {
+    //   const optionRect = optionRefs.current[filteredIndex]!.offsetTop;
+    //   console.log("optionRect", optionRect);
+    //   setScrollRelativeTop(optionRect);
+    // }
+    if (optionRefs.current && filteredIndex !== undefined) {
       const optionRect = optionRefs.current[filteredIndex]!.offsetTop;
-      console.log("optionRect", optionRect);
+
       setScrollRelativeTop(optionRect);
+    }
+  };
+
+  /**
+   * @function onMoveScroll
+   * @param filteredIndex 현재 active한 option index
+   * @param dir 키보드 up, down을 -1,1
+   * @description 키보드 상하 방향키 입력에 따라 스크롤이 이동 할수 있도록 한다.
+   */
+  const onMoveScroll = (filteredIndex: number, dir: number) => {
+    console.log(filteredIndex);
+
+    const lastCount =
+      filteredOptions.length > 0 ? filteredOptions.length : options.length;
+    const viewCount = 6;
+
+    if (
+      filteredIndex &&
+      filteredIndex >= viewCount &&
+      filteredIndex < lastCount
+    ) {
+      if (containerRef.current) {
+        const scrollPosition =
+          scrollTop + optionRefs.current[filteredIndex]!.offsetHeight * dir;
+        console.log("scrollTop", scrollTop, "scrollPosition", scrollPosition);
+
+        scrollTo(scrollPosition);
+      }
     }
   };
 
@@ -194,7 +223,7 @@ function App() {
 
     switch (keyCode) {
       case "Enter":
-        console.log("Enter 키가 눌렸습니다.", "filteredIndex");
+        console.log("Enter 키가 눌렸습니다.");
         if (filteredIndex !== undefined) {
           const selectItem = options.find(
             (_, index) => index === filteredIndex
@@ -211,16 +240,17 @@ function App() {
 
         break;
       case "ArrowUp":
-        console.log("위쪽 화살표 키가 눌렸습니다.");
-
         setFilteredIndex((prevState) => {
-          console.log(prevState);
           if (prevState !== undefined) {
             if (prevState > 0) {
-              return (prevState - 1) % len;
+              const currentIndex = (prevState - 1) % len;
+              onMoveScroll(currentIndex, -1);
+              return currentIndex;
             }
+            onMoveScroll(len - 1, -1);
             return len - 1;
           }
+          onMoveScroll(len - 1, -1);
           return len - 1;
         });
 
@@ -228,21 +258,25 @@ function App() {
 
         break;
       case "ArrowDown":
-        console.log("아래쪽 화살표 키가 눌렸습니다.");
         setFilteredIndex((prevState) => {
-          console.log(prevState);
           if (prevState !== undefined) {
             if (prevState + 1 < len) {
-              return (prevState + 1) % len;
+              const currentIndex = (prevState + 1) % len;
+              onMoveScroll(currentIndex, 1);
+              return currentIndex;
             }
+            onMoveScroll(0, 1);
             return 0;
           }
+          onMoveScroll(0, 1);
           return 0;
         });
+
         scrollPostionY();
 
         break;
       default:
+        console.log("key filteredIndex", filteredIndex);
         break;
     }
   };
@@ -252,6 +286,7 @@ function App() {
       <div className="contents">
         <div
           style={{
+            width: "100%",
             boxSizing: "border-box",
             display: "flex",
             justifyContent: "center",
