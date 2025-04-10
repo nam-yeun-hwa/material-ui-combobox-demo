@@ -9,7 +9,8 @@ material-ui중 combobox를 데모 버전으로 만들어 보도록 한다.
 컨셉 링크 : https://mui.com/material-ui/react-autocomplete/#combo-box
 
 ## 미리보기 링크
-!📄[파일 설명](https://drive.google.com/file/d/1fuZpra8SJNuwEpKUszY2hlsLfEPcofcZ/preview)
+아래 링크를 누르시면 미리보기 화면으로 이동합니다. </br>
+!📄[미리보기](https://drive.google.com/file/d/1fuZpra8SJNuwEpKUszY2hlsLfEPcofcZ/preview)
 
 
 # DEMO version 0.0.1
