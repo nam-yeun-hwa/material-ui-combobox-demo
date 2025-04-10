@@ -14,7 +14,10 @@ material-ui중 combobox를 데모 버전으로 만들어 보도록 한다.
   [📄 미리보기](https://drive.google.com/file/d/1OwZQNjHpxW8d08wJ08Q71S-r1lOiKqOd/preview)
 </div>
 
-
+## 미리보기
+아래 링크를 클릭하면 동영상 미리보기가 제공 됩니다.</br>
+[📄 미리보기](https://drive.google.com/file/d/1OwZQNjHpxW8d08wJ08Q71S-r1lOiKqOd/preview)
+<img src="https://drive.google.com/file/d/1OwZQNjHpxW8d08wJ08Q71S-r1lOiKqOd/preview" width="auto" height="auto"/>
 
 # DEMO version 0.0.1
 
